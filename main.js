@@ -1,3 +1,5 @@
+import { DrawScottishFlag } from "./canvas.js";
+
 let developer = {
     firstName:"Alex",
     lastName: "Pop",
@@ -19,4 +21,5 @@ let Greet = (name) => {
 
 window.onload = () => {
     console.log(developer);
+    DrawScottishFlag(200, 100, "#187BCD", "#FFFFFF", 10);
   };

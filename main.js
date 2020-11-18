@@ -1,5 +1,3 @@
-import { DrawScottishFlag, DrawFlag } from "./canvas.js";
-
 let developer = {
     firstName:"Alex",
     lastName: "Pop",

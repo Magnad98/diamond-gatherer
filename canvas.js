@@ -11,7 +11,7 @@ export const DrawScottishFlag = (width, height, mainColor, secondColor, lineWidt
     DrawFlag(context, offsetToImageCenter, width, height, mainColor, secondColor, lineWidth);
 }
 
-const DrawFlag = (context, offset, width, height, mainColor, secondColor, lineWidth) => {
+export const DrawFlag = (context, offset, width, height, mainColor, secondColor, lineWidth) => {
     let startX = offset.width;
     let startY = offset.height;
     let endX = offset.width + width;

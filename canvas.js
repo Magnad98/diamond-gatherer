@@ -1,21 +1,6 @@
-
-export const DrawScottishFlag = (width, height, mainColor, secondColor, lineWidth) => {
-    let canvas = document.getElementById("gameArea");
-    let context = canvas.getContext("2d");
-
-    let offsetToImageCenter = {
-        width: canvas.width / 2 - width / 2,
-        height: canvas.height / 2 - height / 2,
-    };
-
-    DrawFlag(context, offsetToImageCenter, width, height, mainColor, secondColor, lineWidth);
-}
-
-export const DrawFlag = (context, offset, width, height, mainColor, secondColor, lineWidth) => {
-    let startX = offset.width;
-    let startY = offset.height;
-    let endX = offset.width + width;
-    let endY = offset.height + height;
+export const DrawFlag = (context, startX, startY, width, height, mainColor, secondColor, lineWidth) => {
+    let endX = startX + width;
+    let endY = startY + height;
 
     DrawRect(context, startX, startY, endX, endY, mainColor);
     DrawLine(context, startX, startY, endX, endY, secondColor, lineWidth);

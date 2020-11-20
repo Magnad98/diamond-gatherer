@@ -14,10 +14,14 @@ const DrawRect = (context, startX, startY, endX, endY, color) => {
 };
 
 const DrawLine = (context, startX, startY, endX, endY, color, lineWidth) => {
+    context.beginPath();
+
     context.strokeStyle = color;
     context.lineWidth = lineWidth;
 
     context.moveTo(startX, startY);
     context.lineTo(endX, endY);
+    
+    context.closePath();
     context.stroke();
 };

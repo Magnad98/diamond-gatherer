@@ -1,9 +1,11 @@
 import {Animal} from "./animal.js";
+import { executeExercises } from "./exercises.js";
 
 const canvas = document.getElementById("gameArea");
 /** @type {CanvasRenderingContext2D} */
 const context = canvas.getContext('2d');
 
+executeExercises();
 /*const myPet = new Animal("Rocky");
 myPet.canEat();*/
 

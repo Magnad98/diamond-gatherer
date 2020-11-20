@@ -1,4 +1,4 @@
-import {Animal} from "./animal.js";
+import { Player } from "./Player.js";
 import { executeExercises } from "./exercises.js";
 
 const canvas = document.getElementById("gameArea");
@@ -6,63 +6,40 @@ const canvas = document.getElementById("gameArea");
 const context = canvas.getContext('2d');
 
 executeExercises();
-/*const myPet = new Animal("Rocky");
-myPet.canEat();*/
 
-/*context.fillStyle = "red";
-context.fillRect(280,20,40,20);*/
+const STEP = 10;
 
-const george = new Image();
-george.src = "./images/Puppy.jpg";
-const GEORGE_WIDTH = 40;
-const GEORGE_HEIGHT= 45;
-let georgeX = 100;
-let georgeY = 100;
-george.onload = () => {
-    context.drawImage(george, 0 * GEORGE_WIDTH, 0 * GEORGE_HEIGHT, GEORGE_WIDTH, GEORGE_HEIGHT, 100, 100, GEORGE_WIDTH, GEORGE_HEIGHT)
+let Mario = new Player("Mario", "./assets/mario.png", 32, 39, 0, 0, canvas, STEP);
+let George = new Player("George", "./assets/george.png", 40, 45, 100, 100, canvas, STEP)
+
+const clearCanvas = () => {
+    context.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-const mario = new Image();
-mario.src = "./images/Puppy.jpg";
-const MARIO_WIDTH = 32;
-const MARIO_HEIGHT= 39;
-
-mario.onload = () => {
-    context.drawImage(mario, 0 * MARIO_WIDTH, 0 * MARIO_HEIGHT, MARIO_WIDTH, MARIO_HEIGHT, 0, 0, MARIO_WIDTH, MARIO_HEIGHT)
+const redrawPlayers = () => {
+    clearCanvas();
+    George.Draw(context);
+    Mario.Draw(context);
 }
 
-const button = document.getElementById("myButton");
-button.addEventListener("click", function () {
-    console.log(this);
-    context.fillStyle = "green";
-    context.fillRect(280,420,40,20);
-})
+window.onload = () => {
+    redrawPlayers();
+};
 
 document.addEventListener("keydown", (event) => {
-    context.clearRect(0,0,400,600);
-    switch(event.key){
-        case "ArrowUp": {
-            georgeY-=10;
-            break;
-        }
-        case "ArrowDown": {
-            georgeY+=10;
-            break;
-        }
-        case "ArrowLeft": {
-            georgeX-=10;
-            break;
-        }
-        case "ArrowRight": {
-            georgeX+=10;
-            break;
-        }
+    switch (event.key) {
+        case "ArrowUp": { George.y >= George.topLimit ? George.y -= STEP : console.log(`${George.name}: Top limit reached`); break; }
+        case "ArrowDown": { George.y <= George.botLimit ? George.y += STEP : console.log(`${George.name}: Bot limit reached`); break; }
+        case "ArrowLeft": { George.x >= George.leftLimit ? George.x -= STEP : console.log(`${George.name}: Left limit reached`); break; }
+        case "ArrowRight": { George.x <= George.rightLimit ? George.x += STEP : console.log(`${George.name}: Right limit reached`); break; }
+    
+        case "w": { Mario.y >= Mario.topLimit ? Mario.y -= STEP : console.log(`${Mario.name}: Top limit reached`); break; }
+        case "s": { Mario.y <= Mario.botLimit ? Mario.y += STEP : console.log(`${Mario.name}: Bot limit reached`); break; }
+        case "a": { Mario.x >= Mario.leftLimit ? Mario.x -= STEP : console.log(`${Mario.name}: Left limit reached`); break; }
+        case "d": { Mario.x <= Mario.rightLimit ? Mario.x += STEP : console.log(`${Mario.name}: Right limit reached`); break; }
     }
-    context.drawImage(mario, 0 * MARIO_WIDTH, 0 * MARIO_HEIGHT, MARIO_WIDTH, MARIO_HEIGHT, 0, 0, MARIO_WIDTH, MARIO_HEIGHT)
-
-    context.drawImage(george, 0 * GEORGE_WIDTH, 0 * GEORGE_HEIGHT, GEORGE_WIDTH, GEORGE_HEIGHT, georgeX, georgeY, GEORGE_WIDTH, GEORGE_HEIGHT)
-
-})
+    redrawPlayers();
+});
 
 
 
@@ -85,6 +62,6 @@ let Greet = (name) => {
     return `Buna, numele meu este ${name}`;
 }
 
-window.onload = () => {
+/* window.onload = () => {
     //console.log(developer);
-};
+}; */

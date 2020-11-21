@@ -1,4 +1,4 @@
-import { Player } from "./Player.js";
+import { Player } from "../classes/Player.js";
 import { executeExercises } from "./exercises.js";
 
 const canvas = document.getElementById("gameArea");
@@ -9,8 +9,8 @@ executeExercises();
 
 const STEP = 10;
 
-let Mario = new Player("Mario", "./assets/mario.png", 32, 39, 0, 0, canvas, STEP);
-let George = new Player("George", "./assets/george.png", 40, 45, 100, 100, canvas, STEP)
+let Mario = new Player("Mario", "../../assets/sprites/mario.png", 32, 39, 0, 0, canvas, STEP);
+let George = new Player("George", "../../assets/sprites/george.png", 40, 45, 100, 100, canvas, STEP);
 
 const clearCanvas = () => {
     context.clearRect(0, 0, canvas.width, canvas.height);

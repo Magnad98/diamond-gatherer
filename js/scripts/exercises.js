@@ -1,4 +1,4 @@
-import {Dog} from "./Dog.js";
+import {Dog} from "../classes/Dog.js";
 
 const modifyArray = (array) => {
     let js = array.pop();

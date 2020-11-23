@@ -1,16 +1,10 @@
 import { Dog } from "../classes/Dog.js";
 
 const modifyArray = (array) => {
-    let js = array.pop();
-    let newArray = [];
-
-    for (let i = 0; i < 2; i++) {
-        let popped = array.pop();
-        newArray.push(popped);
-    }
-
-    newArray.push(js);
-    return newArray;
+    let temp = array[0];
+    array[0] = array[1];
+    array[1] = temp;
+    return array;
 };
 
 

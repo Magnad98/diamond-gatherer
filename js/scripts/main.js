@@ -10,12 +10,15 @@ executeExercises();
 
 const STEP = 10;
 let validator = new Validator();
+let backgroundImage = new Image();
+backgroundImage.src = "../../assets/sprites/desert.png";
 
 let mario = new Player("Mario", "../../assets/sprites/mario.png", 32, 39, 0, 0, canvas, STEP);
 let george = new Player("George", "../../assets/sprites/george.png", 40, 45, 100, 100, canvas, STEP);
 
 const clearCanvas = () => {
     context.clearRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(backgroundImage,0,0);
 }
 
 const redrawPlayers = () => {

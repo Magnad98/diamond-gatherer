@@ -9,6 +9,7 @@ export class Player {
         this.height = height;
         this.x = x;
         this.y = y;
+        this.step = step;
 
         this.topLimit = step;
         this.botLimit = canvas.height - height - step;

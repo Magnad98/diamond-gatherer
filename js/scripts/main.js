@@ -1,4 +1,5 @@
 import { Player } from "../classes/Player.js";
+import { Validator } from "../classes/Validator.js";
 import { executeExercises } from "./exercises.js";
 
 const canvas = document.getElementById("gameArea");
@@ -8,6 +9,7 @@ const context = canvas.getContext('2d');
 executeExercises();
 
 const STEP = 10;
+let validator = new Validator();
 
 let mario = new Player("Mario", "../../assets/sprites/mario.png", 32, 39, 0, 0, canvas, STEP);
 let george = new Player("George", "../../assets/sprites/george.png", 40, 45, 100, 100, canvas, STEP);
@@ -28,15 +30,15 @@ window.onload = () => {
 
 document.addEventListener("keydown", (event) => {
     switch (event.key) {
-        case "ArrowUp": { george.y >= george.topLimit ? george.y -= STEP : console.log(`${george.name}: Top limit reached`); break; }
-        case "ArrowDown": { george.y <= george.botLimit ? george.y += STEP : console.log(`${george.name}: Bot limit reached`); break; }
-        case "ArrowLeft": { george.x >= george.leftLimit ? george.x -= STEP : console.log(`${george.name}: Left limit reached`); break; }
-        case "ArrowRight": { george.x <= george.rightLimit ? george.x += STEP : console.log(`${george.name}: Right limit reached`); break; }
+        case "ArrowUp": { validator.validateUp(george); break; }
+        case "ArrowDown": { validator.validateDown(george); break; }
+        case "ArrowLeft": { validator.validateLeft(george); break; }
+        case "ArrowRight": { validator.validateRight(george); break; }
 
-        case "w": { mario.y >= mario.topLimit ? mario.y -= STEP : console.log(`${mario.name}: Top limit reached`); break; }
-        case "s": { mario.y <= mario.botLimit ? mario.y += STEP : console.log(`${mario.name}: Bot limit reached`); break; }
-        case "a": { mario.x >= mario.leftLimit ? mario.x -= STEP : console.log(`${mario.name}: Left limit reached`); break; }
-        case "d": { mario.x <= mario.rightLimit ? mario.x += STEP : console.log(`${mario.name}: Right limit reached`); break; }
+        case "w": { validator.validateUp(mario); break; }
+        case "s": { validator.validateDown(mario); break; }
+        case "a": { validator.validateLeft(mario); break; }
+        case "d": { validator.validateRight(mario); break; }
     }
     redrawPlayers();
 });

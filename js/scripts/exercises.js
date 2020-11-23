@@ -1,10 +1,10 @@
-import {Dog} from "../classes/Dog.js";
+import { Dog } from "../classes/Dog.js";
 
 const modifyArray = (array) => {
     let js = array.pop();
     let newArray = [];
 
-    for(let i=0; i<2; i++){
+    for (let i = 0; i < 2; i++) {
         let popped = array.pop();
         newArray.push(popped);
     }
@@ -20,27 +20,27 @@ const iterateArray = (array) => {
     });
 };
 
-const InstantiateDogs = () => {
-    let Bruno = new Dog("Bruno", "Beagle", 3, "Male", "Brown");
-    let Pascal = new Dog("Pascal", "Teckel", 5, "Male", "Black");
-    let Lola = new Dog("Lola", "Jack Russell Terrier", 4, "Female", "White");
+const instantiateDogs = () => {
+    let bruno = new Dog("Bruno", "Beagle", 3, "Male", "Brown");
+    let pascal = new Dog("Pascal", "Teckel", 5, "Male", "Black");
+    let lola = new Dog("Lola", "Jack Russell Terrier", 4, "Female", "White");
 
-    Bruno.GetInfo();
-    Pascal.GetInfo();
-    Lola.GetInfo();
+    bruno.getInfo();
+    pascal.getInfo();
+    lola.getInfo();
 
-    Pascal.Bark();
-    Bruno.Fetch();
-    Lola.Pet();
+    pascal.bark();
+    bruno.fetch();
+    lola.pet();
 
-    Bruno.GetOlder();
+    bruno.getOlder();
 
-    Lola.Rename("Linda");
-    Lola.GetInfo();
+    lola.rename("Linda");
+    lola.getInfo();
 };
 
 export const executeExercises = () => {
     console.log(modifyArray(["Love", "I", "Javascript"]));
-    iterateArray(["Paul", 1, false, { name: "Jon Snow"}, [1, 2, 3], null, undefined, function() { console.log('Test')} ]);
-    InstantiateDogs();
+    iterateArray(["Paul", 1, false, { name: "Jon Snow" }, [1, 2, 3], null, undefined, function () { console.log('Test') }]);
+    instantiateDogs();
 }

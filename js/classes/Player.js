@@ -1,7 +1,7 @@
 export class Player {
     constructor(name, path, width, height, x, y, canvas, step) {
         this.name = name;
-        
+
         this.image = new Image();
         this.image.src = path;
 
@@ -15,7 +15,7 @@ export class Player {
         this.leftLimit = step;
         this.rightLimit = canvas.width - width - step;
     }
-    Draw (context) {
+    draw(context) {
         context.drawImage(
             this.image,
             0 * this.width,

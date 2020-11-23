@@ -9,8 +9,8 @@ executeExercises();
 
 const STEP = 10;
 
-let Mario = new Player("Mario", "../../assets/sprites/mario.png", 32, 39, 0, 0, canvas, STEP);
-let George = new Player("George", "../../assets/sprites/george.png", 40, 45, 100, 100, canvas, STEP);
+let mario = new Player("Mario", "../../assets/sprites/mario.png", 32, 39, 0, 0, canvas, STEP);
+let george = new Player("George", "../../assets/sprites/george.png", 40, 45, 100, 100, canvas, STEP);
 
 const clearCanvas = () => {
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -18,8 +18,8 @@ const clearCanvas = () => {
 
 const redrawPlayers = () => {
     clearCanvas();
-    George.Draw(context);
-    Mario.Draw(context);
+    george.draw(context);
+    mario.draw(context);
 }
 
 window.onload = () => {
@@ -28,15 +28,15 @@ window.onload = () => {
 
 document.addEventListener("keydown", (event) => {
     switch (event.key) {
-        case "ArrowUp": { George.y >= George.topLimit ? George.y -= STEP : console.log(`${George.name}: Top limit reached`); break; }
-        case "ArrowDown": { George.y <= George.botLimit ? George.y += STEP : console.log(`${George.name}: Bot limit reached`); break; }
-        case "ArrowLeft": { George.x >= George.leftLimit ? George.x -= STEP : console.log(`${George.name}: Left limit reached`); break; }
-        case "ArrowRight": { George.x <= George.rightLimit ? George.x += STEP : console.log(`${George.name}: Right limit reached`); break; }
-    
-        case "w": { Mario.y >= Mario.topLimit ? Mario.y -= STEP : console.log(`${Mario.name}: Top limit reached`); break; }
-        case "s": { Mario.y <= Mario.botLimit ? Mario.y += STEP : console.log(`${Mario.name}: Bot limit reached`); break; }
-        case "a": { Mario.x >= Mario.leftLimit ? Mario.x -= STEP : console.log(`${Mario.name}: Left limit reached`); break; }
-        case "d": { Mario.x <= Mario.rightLimit ? Mario.x += STEP : console.log(`${Mario.name}: Right limit reached`); break; }
+        case "ArrowUp": { george.y >= george.topLimit ? george.y -= STEP : console.log(`${george.name}: Top limit reached`); break; }
+        case "ArrowDown": { george.y <= george.botLimit ? george.y += STEP : console.log(`${george.name}: Bot limit reached`); break; }
+        case "ArrowLeft": { george.x >= george.leftLimit ? george.x -= STEP : console.log(`${george.name}: Left limit reached`); break; }
+        case "ArrowRight": { george.x <= george.rightLimit ? george.x += STEP : console.log(`${george.name}: Right limit reached`); break; }
+
+        case "w": { mario.y >= mario.topLimit ? mario.y -= STEP : console.log(`${mario.name}: Top limit reached`); break; }
+        case "s": { mario.y <= mario.botLimit ? mario.y += STEP : console.log(`${mario.name}: Bot limit reached`); break; }
+        case "a": { mario.x >= mario.leftLimit ? mario.x -= STEP : console.log(`${mario.name}: Left limit reached`); break; }
+        case "d": { mario.x <= mario.rightLimit ? mario.x += STEP : console.log(`${mario.name}: Right limit reached`); break; }
     }
     redrawPlayers();
 });

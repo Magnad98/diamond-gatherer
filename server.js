@@ -30,6 +30,7 @@ io.on("connection", (socket) => {
         socket.emit("joined-chat");
         usersOnline++;
         socket.join("users-online");
+        io.to("chat").emit("new-message", userName, "joined chat");
         io.to("users-online").emit("update-users-online", usersOnline);
     });
 
@@ -41,12 +42,14 @@ io.on("connection", (socket) => {
 
     socket.on("leave-chat", () => {
         console.log("[USER LEFT CHAT]", socket.id);
+        let userName = chatUsers[socket.id];
         delete chatUsers[socket.id];
         socket.leave("chat");
         socket.emit("menu");
         usersOnline--;
-        io.to("users-online").emit("update-users-online", usersOnline);
         socket.leave("users-online");
+        io.to("chat").emit("new-message", userName, "left chat");
+        io.to("users-online").emit("update-users-online", usersOnline);
     });
 
     socket.on("create-game", (gameName) => {

@@ -28,7 +28,7 @@ document.getElementById("send-message-button").addEventListener("click", () => {
     socket.emit('send-message', message, color);
 });
 
-socket.on("new-message", (user, message, color) => {
+socket.on("new-message", (user, message, color = "black") => {
     const messagesContainer = document.getElementById("chat-messages");
 
     const userElement = document.createElement("p");

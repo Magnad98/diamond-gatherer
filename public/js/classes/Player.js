@@ -4,7 +4,7 @@ class Player {
         this.y = options.y;
         this.dx = options.dx;
         this.dy = options.dy;
-        this.imageId = options, imageId;
+        this.imageId = options.imageId;
         this.direction = options.direction;
         this.imageStartPoints = options.imageStartPoints;
         this.playerDim = options.playerDim;

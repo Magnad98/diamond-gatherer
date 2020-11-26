@@ -1,23 +1,24 @@
 const express = require("express");
 const app = express();
+
 const http = require("http").createServer(app);
 const io = require("socket.io")(http);
 const port = 5000;
 
 const PLAYER_DIM = 32;
-http.listen(port, () => {
-    console.log(`[SERVER STARTED AT PORT ${port}]`);
+
+http.listen(5000, () => {
+    console.log('[SERVER STARTED AT PORT 5000]');
 })
 
 app.get('/', (request, response) => {
-    //console.log(__dirname);
-    response.sendFile(__dirname + "/index.html");
-});
+    response.sendFile(__dirname + '/index.html');
+})
 
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + '/public'));
 
 io.on("connection", (socket) => {
-    console.log("[SOCKET CONNECTED" + socket.id);
+    console.log("[SOCKET CONNECTED]" + socket.id);
 
     socket.on("join-chat", (userName) => {
         console.log("[USER JOINED CHAT]", socket.id, userName);
@@ -33,7 +34,7 @@ io.on("connection", (socket) => {
 
     socket.on("leave-chat", () => {
         console.log("[USER LEFT CHAT]", socket.id);
-        delete chatusers[socket.id];
+        delete chatUsers[socket.id];
         socket.leave("chat");
         socket.emit("menu");
     });
@@ -41,12 +42,13 @@ io.on("connection", (socket) => {
     socket.on("create-game", (gameName) => {
         console.log("[NEW GAME CREATED]");
         const gameId = "game-" + socket.id;
-        const players = [new players()]
+        const players = [new Player()];
         const game = new Game({
             id: gameId,
+            players: players,
         });
         games[gameId] = game;
-        console.log("[USer joined " + gameId)
+        console.log(`[User joined ${gameId}] room`);
         socket.join(gameId);
     });
 });
@@ -78,8 +80,8 @@ class Player {
                 this.y,
                 PLAYER_DIM,
                 PLAYER_DIM,
-            ]
-        }
+            ],
+        };
     }
 }
 class Game {
@@ -89,17 +91,22 @@ class Game {
         this.start();
     }
     start() {
-        const that = this;
-        setInterval(function() { gameLoop(that.id) }, 1000 / 60);
+        setInterval(
+            () => {
+                gameLoop(this.id)
+            },
+            1000 / 60
+        );
     }
 }
 
 const gameLoop = (id) => {
     const objectsForDraw = [];
-    games[id].player.forEach(() => {
-        objectsForDraw.push(player.forDraw())
+    games[id].players.forEach((player) => {
+        objectsForDraw.push(player.forDraw());
     });
     io.to(id).emit("game-loop", objectsForDraw);
 }
+
 const chatUsers = {};
 const games = {};

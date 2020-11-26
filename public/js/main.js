@@ -1,7 +1,9 @@
-const { isContext } = require("vm");
+const canvas = document.getElementById("game-canvas");
+/** @type {CanvasRenderingContext2D} */
+const context = canvas.getContext('2d');
 
 const socket = io();
-//addCOntext
+
 document.getElementById("join-chat-button").addEventListener("click", () => {
     const input = document.getElementById("user-name-input");
     const userName = input.value;
@@ -14,33 +16,33 @@ document.getElementById("join-chat-button").addEventListener("click", () => {
 });
 
 socket.on("joined-chat", () => {
-    console.log("you joined chat!");
-    document.getElementById("joined-chat").classList.add("display-none");
+    console.log("You joined chat!");
+    document.getElementById("join-chat").classList.add("display-none");
     document.getElementById("chat-container").classList.remove("display-none");
 });
 
 document.getElementById("send-message-button").addEventListener("click", () => {
+    const input = document.getElementById("message");
     const message = input.value;
     socket.emit('send-message', message);
 });
 
 socket.on("new-message", (message) => {
-    const mesageContainer = document.getElementById("chat-messages");
-    const messageElement = document.getElementById("p");
+    const messagesContainer = document.getElementById("chat-messages");
+    const messageElement = document.createElement("p");
     messageElement.innerHTML = message;
-    messageContainer.appendChild(messageElement);
+    messagesContainer.appendChild(messageElement);
 });
 
 document.getElementById("leave-chat-button").addEventListener("click", () => {
-    //socket.
+    socket.emit("leave-chat");
 });
 
 socket.on("menu", () => {
-    console.log("you left chat!");
+    console.log("You left chat!");
     document.getElementById("join-chat").classList.remove("display-none");
     document.getElementById("chat-container").classList.add("display-none");
 });
-
 
 document.getElementById("create-game-button").addEventListener("click", () => {
     const input = document.getElementById("game-name-input");
@@ -60,7 +62,6 @@ socket.on("game-loop", (objectsForDraw) => {
     context.drawImage(document.getElementById("map-image"), 0, 0);
 
     objectsForDraw.forEach((objectsForDraw) => {
-        console.log(objectsForDraw);
         context.drawImage(
             document.getElementById(objectsForDraw.imageId),
             ...objectsForDraw.drawImageParameters

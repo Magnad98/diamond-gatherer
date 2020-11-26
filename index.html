@@ -5,20 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diamond Gatherer</title>
-    <link rel="stylesheet" href="./css/style.css">
 
     <!--This line solves the console error "GET http://127.0.0.1:5500/favicon.ico [HTTP/1.1 404 Not Found 0ms]"-->
     <link rel="shortcut icon" href="#">
 
-    <script src="/socket.io/socket.io.js" type="module"></script>
-    <script type="module" src="./js/main.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
+
+    <script src="./socket.io/socket.io.js" type="module"></script>
+    <script src="./js/main.js" type="module"></script>
 </head>
 
 <body>
-    <!--<h1>Hello World!</h1>
-    <canvas id="gameArea" width="600" height="400"></canvas>-->
-    <img src="assets/map.png" class="display-none" id="map-image">
-    <img src="assets/space-ranger-player.png" class="display-none" id="space-ranger">
+    <img src="./assets/map.png" class="display-none" id="map-image">
+    <img src="./assets/space-ranger-player.png" class="display-none" id="space-ranger">
     <div id="join-chat">
         <input type="text" id="user-name-input" placeholder="Enter your name" />
         <button id="join-chat-button">Join Chat</button>
@@ -28,14 +27,15 @@
         <div id="chat-messages">
 
         </div>
-        <input type="text" id="mesage" placeholder="Your message" />
+        <input type="text" id="message" placeholder="Your message" />
         <button id="send-message-button">Send!</button>
         <br>
         <button id="leave-chat-button">Leave chat!</button>
     </div>
     <div id="create-game-container">
-        <input id="game-game" type="text" placeholder="Set game name" />
-        <button id="create-game-button">Create game!</button>
+        <input id="game-name-input" type="text" placeholder="Enter the game name" />
+        <button id="create-game-button">Create Game!</button>
+        <p id="game-name-missing" class="display-none">Please enter a name to create a new game!</p>
     </div>
     <div id="game-container" class="display-none">
         <canvas id="game-canvas" width="960" height="640"></canvas>

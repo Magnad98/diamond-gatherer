@@ -16,22 +16,34 @@ document.getElementById("join-chat-button").addEventListener("click", () => {
 });
 
 socket.on("joined-chat", () => {
+    //socket.emit("increment-counter", counterValue + 1);
     console.log("You joined chat!");
     document.getElementById("join-chat").classList.add("display-none");
     document.getElementById("chat-container").classList.remove("display-none");
+    //document.getElementById("users-online").innerHTML = socket.emit("get-counter-value");
 });
 
 document.getElementById("send-message-button").addEventListener("click", () => {
     const input = document.getElementById("message");
     const message = input.value;
-    socket.emit('send-message', message);
+    const color = document.getElementById("text-color").value;
+    socket.emit('send-message', message, color);
 });
 
-socket.on("new-message", (message) => {
+socket.on("new-message", (user, message, color) => {
     const messagesContainer = document.getElementById("chat-messages");
-    const messageElement = document.createElement("p");
+
+    const userElement = document.createElement("p");
+    userElement.innerHTML = user;
+
+    const messageElement = document.createElement("span");
     messageElement.innerHTML = message;
+    messageElement.style.color = color;
+
+    messagesContainer.appendChild(userElement);
     messagesContainer.appendChild(messageElement);
+
+    document.getElementById("message").value = "";
 });
 
 document.getElementById("leave-chat-button").addEventListener("click", () => {

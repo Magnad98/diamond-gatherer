@@ -29,9 +29,9 @@ io.on("connection", (socket) => {
         socket.emit("joined-chat");
     });
 
-    socket.on("send-message", (message) => {
-        console.log("[USER SENT MESSAGE]", message);
-        io.to("chat").emit("new-message", `${chatUsers[socket.id]}: ${message}`);
+    socket.on("send-message", (message, color) => {
+        console.log("[USER SENT MESSAGE]", message, color);
+        io.to("chat").emit("new-message", `${chatUsers[socket.id]}: `, message, color);
     });
 
     socket.on("leave-chat", () => {

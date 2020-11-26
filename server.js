@@ -8,6 +8,7 @@ const port = 5000;
 const PLAYER_DIM = 32;
 
 let counter = 0;
+let usersOnline = 0;
 
 http.listen(5000, () => {
     console.log('[SERVER STARTED AT PORT 5000]');
@@ -27,11 +28,15 @@ io.on("connection", (socket) => {
         chatUsers[socket.id] = userName;
         socket.join("chat");
         socket.emit("joined-chat");
+        usersOnline++;
+        socket.join("users-online");
+        io.to("users-online").emit("update-users-online", usersOnline);
     });
 
     socket.on("send-message", (message, color) => {
         console.log("[USER SENT MESSAGE]", message, color);
         io.to("chat").emit("new-message", `${chatUsers[socket.id]}: `, message, color);
+        io.to("users-online").emit("update-users-online", usersOnline);
     });
 
     socket.on("leave-chat", () => {
@@ -39,6 +44,9 @@ io.on("connection", (socket) => {
         delete chatUsers[socket.id];
         socket.leave("chat");
         socket.emit("menu");
+        usersOnline--;
+        io.to("users-online").emit("update-users-online", usersOnline);
+        socket.leave("users-online");
     });
 
     socket.on("create-game", (gameName) => {

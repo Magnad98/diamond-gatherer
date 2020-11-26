@@ -16,11 +16,9 @@ document.getElementById("join-chat-button").addEventListener("click", () => {
 });
 
 socket.on("joined-chat", () => {
-    //socket.emit("increment-counter", counterValue + 1);
     console.log("You joined chat!");
     document.getElementById("join-chat").classList.add("display-none");
     document.getElementById("chat-container").classList.remove("display-none");
-    //document.getElementById("users-online").innerHTML = socket.emit("get-counter-value");
 });
 
 document.getElementById("send-message-button").addEventListener("click", () => {
@@ -54,6 +52,10 @@ socket.on("menu", () => {
     console.log("You left chat!");
     document.getElementById("join-chat").classList.remove("display-none");
     document.getElementById("chat-container").classList.add("display-none");
+});
+
+socket.on("update-users-online", (usersOnline) => {
+    document.getElementById("users-online").innerHTML = usersOnline;
 });
 
 document.getElementById("create-game-button").addEventListener("click", () => {

@@ -10,8 +10,8 @@ const PLAYER_DIM = 32;
 let counter = 0;
 let usersOnline = 0;
 
-http.listen(5000, () => {
-    console.log('[SERVER STARTED AT PORT 5000]');
+http.listen(port, () => {
+    console.log(`[SERVER STARTED AT PORT ${port}]`);
 })
 
 app.get('/', (request, response) => {
@@ -21,10 +21,10 @@ app.get('/', (request, response) => {
 app.use(express.static(__dirname + '/public'));
 
 io.on("connection", (socket) => {
-    console.log("[SOCKET CONNECTED]" + socket.id);
+    console.log(`[SOCKET CONNECTED WITH ID ${socket.id}]`);
 
     socket.on("join-chat", (userName) => {
-        console.log("[USER JOINED CHAT]", socket.id, userName);
+        console.log(`[USER ${userName} JOINED THE CHAT WITH ID ${socket.id}]`);
         chatUsers[socket.id] = userName;
         socket.join("chat");
         socket.emit("joined-chat");
@@ -35,14 +35,15 @@ io.on("connection", (socket) => {
     });
 
     socket.on("send-message", (message, color) => {
-        console.log("[USER SENT MESSAGE]", message, color);
+        let userName = chatUsers[socket.id];
+        console.log(`[USER ${userName} SENT THE MESSAGE ${message}]`);
         io.to("chat").emit("new-message", `${chatUsers[socket.id]}: `, message, color);
         io.to("users-online").emit("update-users-online", usersOnline);
     });
 
     socket.on("leave-chat", () => {
-        console.log("[USER LEFT CHAT]", socket.id);
         let userName = chatUsers[socket.id];
+        console.log(`[USER ${userName} LEFT THE CHAT WITH ID ${socket.id}]`);
         delete chatUsers[socket.id];
         socket.leave("chat");
         socket.emit("menu");

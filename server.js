@@ -7,6 +7,8 @@ const port = 5000;
 
 const PLAYER_DIM = 32;
 
+let counter = 0;
+
 http.listen(5000, () => {
     console.log('[SERVER STARTED AT PORT 5000]');
 })
@@ -50,6 +52,15 @@ io.on("connection", (socket) => {
         games[gameId] = game;
         console.log(`[User joined ${gameId}] room`);
         socket.join(gameId);
+    });
+
+    socket.on("get-counter-value", () => {
+        socket.emit("counter-value", counter);
+    });
+
+    socket.on("increment-counter", (incrementedCounter) => {
+        counter = incrementedCounter;
+        socket.emit("incremented-counter-value", counter);
     });
 });
 

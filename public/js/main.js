@@ -32,14 +32,19 @@ socket.on("new-message", (user, message, color) => {
     const messagesContainer = document.getElementById("chat-messages");
 
     const userElement = document.createElement("p");
-    userElement.innerHTML = user;
+    userElement.style.display = "inline-block";
+    userElement.innerHTML = user + "&nbsp"; // insert a forced space after user
 
-    const messageElement = document.createElement("span");
-    messageElement.innerHTML = message;
+    const messageElement = document.createElement("p");
+    messageElement.style.display = "inline-block";
     messageElement.style.color = color;
+    messageElement.innerHTML = message;
 
-    messagesContainer.appendChild(userElement);
-    messagesContainer.appendChild(messageElement);
+    const divElement = document.createElement("div");
+    divElement.appendChild(userElement);
+    divElement.appendChild(messageElement);
+
+    messagesContainer.appendChild(divElement);
 
     document.getElementById("message").value = "";
 });

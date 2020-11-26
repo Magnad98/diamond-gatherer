@@ -1,3 +1,6 @@
+const Player = require("./public/js/classes/Player.js");
+const Game = require("./public/js/classes/Game.js");
+
 const express = require("express");
 const app = express();
 
@@ -6,9 +9,19 @@ const io = require("socket.io")(http);
 const port = 5000;
 
 const PLAYER_DIM = 32;
+const chatUsers = {};
+const games = {};
 
 let counter = 0;
 let usersOnline = 0;
+
+const gameLoop = (id) => {
+    const objectsForDraw = [];
+    games[id].players.forEach((player) => {
+        objectsForDraw.push(player.forDraw());
+    });
+    io.to(id).emit("game-loop", objectsForDraw);
+}
 
 http.listen(port, () => {
     console.log(`[SERVER STARTED AT PORT ${port}]`);
@@ -56,10 +69,25 @@ io.on("connection", (socket) => {
     socket.on("create-game", (gameName) => {
         console.log("[NEW GAME CREATED]");
         const gameId = "game-" + socket.id;
-        const players = [new Player()];
+        const players = [new Player({
+            x: 80,
+            y: 127,
+            dx: 0,
+            dy: 0,
+            imageId: "space-ranger",
+            direction: "down",
+            imageStartPoints: {
+                right: [193, 225],
+                left: [131, 161],
+                down: [65, 98],
+                up: [0, 33],
+            },
+            playerDim: PLAYER_DIM,
+        })];
         const game = new Game({
             id: gameId,
             players: players,
+            gameLoop: gameLoop,
         });
         games[gameId] = game;
         console.log(`[User joined ${gameId}] room`);
@@ -75,61 +103,3 @@ io.on("connection", (socket) => {
         socket.emit("incremented-counter-value", counter);
     });
 });
-
-class Player {
-    constructor(options) {
-        this.x = 80;
-        this.y = 127;
-        this.dx = 0;
-        this.dy = 0;
-        this.imageId = "space-ranger";
-        this.direction = "down";
-        this.imageStartPoints = {
-            right: [193, 225],
-            left: [131, 161],
-            down: [65, 98],
-            up: [0, 33],
-        };
-    }
-    forDraw() {
-        return {
-            imageId: this.imageId,
-            drawImageParameters: [
-                this.imageStartPoints[this.direction][0],
-                0,
-                PLAYER_DIM,
-                PLAYER_DIM,
-                this.x,
-                this.y,
-                PLAYER_DIM,
-                PLAYER_DIM,
-            ],
-        };
-    }
-}
-class Game {
-    constructor(options) {
-        this.id = options.id;
-        this.players = options.players;
-        this.start();
-    }
-    start() {
-        setInterval(
-            () => {
-                gameLoop(this.id)
-            },
-            1000 / 60
-        );
-    }
-}
-
-const gameLoop = (id) => {
-    const objectsForDraw = [];
-    games[id].players.forEach((player) => {
-        objectsForDraw.push(player.forDraw());
-    });
-    io.to(id).emit("game-loop", objectsForDraw);
-}
-
-const chatUsers = {};
-const games = {};

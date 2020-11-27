@@ -27,11 +27,15 @@ http.listen(port, () => {
     console.log(`[SERVER STARTED AT PORT ${port}]`);
 })
 
-app.get('/', (request, response) => {
-    response.sendFile(__dirname + '/index.html');
-})
+app.get("/", (request, response) => {
+    response.sendFile(__dirname + "/index.html");
+});
 
-app.use(express.static(__dirname + '/public'));
+app.get("/about", (request, response) => {
+    response.sendFile(__dirname + "/about.html");
+});
+
+app.use(express.static(__dirname + "/public"));
 
 io.on("connection", (socket) => {
     console.log(`[SOCKET CONNECTED WITH ID ${socket.id}]`);

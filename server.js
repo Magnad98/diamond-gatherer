@@ -1,3 +1,6 @@
+//class imports
+const Player = require("./public/js/classes/Player.js");
+
 const express = require("express");
 const app = express();
 
@@ -42,7 +45,21 @@ io.on("connection", (socket) => {
     socket.on("create-game", (gameName) => {
         console.log("[NEW GAME CREATED]");
         const gameId = "game-" + socket.id;
-        const players = [new Player()];
+        const players = [new Player({
+            playerDim: PLAYER_DIM,
+            x: 80,
+            y: 127,
+            dx: 0,
+            dy: 0,
+            imageId: "space-ranger",
+            direction: "down",
+            imageStartPoints: {
+                right: [193, 225],
+                left: [131, 161],
+                down: [65, 98],
+                up: [0, 33],
+            }
+        })];
         const game = new Game({
             id: gameId,
             players: players,
@@ -53,37 +70,6 @@ io.on("connection", (socket) => {
     });
 });
 
-class Player {
-    constructor(options) {
-        this.x = 80;
-        this.y = 127;
-        this.dx = 0;
-        this.dy = 0;
-        this.imageId = "space-ranger";
-        this.direction = "down";
-        this.imageStartPoints = {
-            right: [193, 225],
-            left: [131, 161],
-            down: [65, 98],
-            up: [0, 33],
-        };
-    }
-    forDraw() {
-        return {
-            imageId: this.imageId,
-            drawImageParameters: [
-                this.imageStartPoints[this.direction][0],
-                0,
-                PLAYER_DIM,
-                PLAYER_DIM,
-                this.x,
-                this.y,
-                PLAYER_DIM,
-                PLAYER_DIM,
-            ],
-        };
-    }
-}
 class Game {
     constructor(options) {
         this.id = options.id;

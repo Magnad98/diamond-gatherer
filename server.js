@@ -13,8 +13,11 @@ const PLAYER_DIM = 32;
 const PLAYER_STEP = 10;
 let validator = new Validator();
 
-http.listen(5000, () => {
-    console.log('[SERVER STARTED AT PORT 5000]');
+let counter = 0;
+let usersOnline = 0;
+
+http.listen(port, () => {
+    console.log(`[SERVER STARTED AT PORT ${port}]`);
 })
 
 app.get('/', (request, response) => {
@@ -24,25 +27,36 @@ app.get('/', (request, response) => {
 app.use(express.static(__dirname + '/public'));
 
 io.on("connection", (socket) => {
-    console.log("[SOCKET CONNECTED]" + socket.id);
+    console.log(`[SOCKET CONNECTED WITH ID ${socket.id}]`);
 
     socket.on("join-chat", (userName) => {
-        console.log("[USER JOINED CHAT]", socket.id, userName);
+        console.log(`[USER ${userName} JOINED THE CHAT WITH ID ${socket.id}]`);
         chatUsers[socket.id] = userName;
         socket.join("chat");
         socket.emit("joined-chat");
+        usersOnline++;
+        socket.join("users-online");
+        io.to("chat").emit("new-message", userName, "joined chat");
+        io.to("users-online").emit("update-users-online", usersOnline);
     });
 
-    socket.on("send-message", (message) => {
-        console.log("[USER SENT MESSAGE]", message);
-        io.to("chat").emit("new-message", `${chatUsers[socket.id]}: ${message}`);
+    socket.on("send-message", (message, color) => {
+        let userName = chatUsers[socket.id];
+        console.log(`[USER ${userName} SENT THE MESSAGE ${message}]`);
+        io.to("chat").emit("new-message", `${chatUsers[socket.id]}: `, message, color);
+        io.to("users-online").emit("update-users-online", usersOnline);
     });
 
     socket.on("leave-chat", () => {
-        console.log("[USER LEFT CHAT]", socket.id);
+        let userName = chatUsers[socket.id];
+        console.log(`[USER ${userName} LEFT THE CHAT WITH ID ${socket.id}]`);
         delete chatUsers[socket.id];
         socket.leave("chat");
         socket.emit("menu");
+        usersOnline--;
+        socket.leave("users-online");
+        io.to("chat").emit("new-message", userName, "left chat");
+        io.to("users-online").emit("update-users-online", usersOnline);
     });
 
     socket.on("create-game", (gameName, canvas) => {
@@ -88,6 +102,15 @@ io.on("connection", (socket) => {
             case "ArrowRight":
                 { validator.validateRight(ranger); break; }
         }
+    });
+
+    socket.on("get-counter-value", () => {
+        socket.emit("counter-value", counter);
+    });
+
+    socket.on("increment-counter", (incrementedCounter) => {
+        counter = incrementedCounter;
+        socket.emit("incremented-counter-value", counter);
     });
 });
 

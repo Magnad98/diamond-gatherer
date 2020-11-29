@@ -27,10 +27,29 @@
         <div id="chat-messages">
 
         </div>
-        <input type="text" id="message" placeholder="Your message" />
-        <button id="send-message-button">Send!</button>
-        <br>
-        <button id="leave-chat-button">Leave chat!</button>
+        <div>
+            <div>
+                <p>Select text color: </p>
+                <select id="text-color">
+                <option value="red">Red</option>
+                <option value="orange" selected="selected">Orange</option>
+                <option value="indigo">Indigo</option>
+              </select>
+            </div>
+            <div>
+                <p>Write message: </p>
+                <input type="text" id="message" placeholder="Your message" />
+                <button id="send-message-button">Send!</button>
+            </div>
+            <div>
+                <p>Users online:</p>
+                <div id="users-online">
+
+                </div>
+            </div>
+            <br>
+            <button id="leave-chat-button">Leave chat!</button>
+        </div>
     </div>
     <div id="create-game-container">
         <input id="game-name-input" type="text" placeholder="Enter the game name" />
@@ -40,6 +59,8 @@
     <div id="game-container" class="display-none">
         <canvas id="game-canvas" width="960" height="640"></canvas>
     </div>
+    <button id="increment-counter-button">Counter</button>
+    <div id="show-counter"></div>
 </body>
 
 </html>

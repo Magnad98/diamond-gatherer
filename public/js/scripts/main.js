@@ -24,14 +24,29 @@ socket.on("joined-chat", () => {
 document.getElementById("send-message-button").addEventListener("click", () => {
     const input = document.getElementById("message");
     const message = input.value;
-    socket.emit('send-message', message);
+    const color = document.getElementById("text-color").value;
+    socket.emit('send-message', message, color);
 });
 
-socket.on("new-message", (message) => {
+socket.on("new-message", (user, message, color = "black") => {
     const messagesContainer = document.getElementById("chat-messages");
+
+    const userElement = document.createElement("p");
+    userElement.style.display = "inline-block";
+    userElement.innerHTML = user + "&nbsp"; // insert a forced space after user
+
     const messageElement = document.createElement("p");
+    messageElement.style.display = "inline-block";
+    messageElement.style.color = color;
     messageElement.innerHTML = message;
-    messagesContainer.appendChild(messageElement);
+
+    const divElement = document.createElement("div");
+    divElement.appendChild(userElement);
+    divElement.appendChild(messageElement);
+
+    messagesContainer.appendChild(divElement);
+
+    document.getElementById("message").value = "";
 });
 
 document.getElementById("leave-chat-button").addEventListener("click", () => {
@@ -42,6 +57,10 @@ socket.on("menu", () => {
     console.log("You left chat!");
     document.getElementById("join-chat").classList.remove("display-none");
     document.getElementById("chat-container").classList.add("display-none");
+});
+
+socket.on("update-users-online", (usersOnline) => {
+    document.getElementById("users-online").innerHTML = usersOnline;
 });
 
 document.getElementById("create-game-button").addEventListener("click", () => {
@@ -75,4 +94,16 @@ socket.on("game-loop", (objectsForDraw) => {
 
 document.addEventListener("keydown", (event) => {
     socket.emit("key-pressed", event.key);
+});
+
+document.getElementById("increment-counter-button").addEventListener("click", () => {
+    socket.emit("get-counter-value");
+});
+
+socket.on("counter-value", (counterValue) => {
+    socket.emit("increment-counter", counterValue + 1);
+});
+
+socket.on("incremented-counter-value", (incrementedCounterValue) => {
+    document.getElementById("show-counter").innerHTML = incrementedCounterValue;
 });

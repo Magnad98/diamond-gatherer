@@ -1,6 +1,6 @@
 const canvas = document.getElementById("game-canvas");
 /** @type {CanvasRenderingContext2D} */
-const context = canvas.getContext('2d');
+const context = canvas.getContext("2d");
 
 const socket = io();
 
@@ -25,7 +25,7 @@ document.getElementById("send-message-button").addEventListener("click", () => {
     const input = document.getElementById("message");
     const message = input.value;
     const color = document.getElementById("text-color").value;
-    socket.emit('send-message', message, color);
+    socket.emit("send-message", message, color);
 });
 
 socket.on("new-message", (user, message, color = "black") => {

@@ -1,6 +1,5 @@
 class Player {
     constructor(options) {
-        this.playerDim = options.playerDim;
         this.x = options.x;
         this.y = options.y;
         this.dx = options.dx; //unused
@@ -8,6 +7,7 @@ class Player {
         this.imageId = options.imageId;
         this.direction = options.direction;
         this.imageStartPoints = options.imageStartPoints;
+        this.playerDim = options.playerDim;
 
         this.name = options.name;
 

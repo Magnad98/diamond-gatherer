@@ -27,12 +27,12 @@ const gameLoop = (id) => {
     });
     io.to(id).emit("game-loop", objectsForDraw);
 }
+
 const startPlayerMovement = (key) => {
     let start = false;
     let bindedKeys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
 
     bindedKeys.forEach((bindedKey) => {
-        console.log(key, key == bindedKey);
         if (key == bindedKey)
             start = true;
     });
@@ -86,22 +86,23 @@ io.on("connection", (socket) => {
         console.log("[NEW GAME CREATED]");
         const gameId = "game-" + socket.id;
         const players = [new Player({
-            name: "Ranger",
-            canvas: canvas,
-            step: PLAYER_STEP,
-            playerDim: PLAYER_DIM,
             x: 80,
             y: 127,
             dx: 0,
             dy: 0,
             imageId: "space-ranger",
-            direction: "down",
             imageStartPoints: {
                 right: [193, 225],
                 left: [131, 161],
                 down: [65, 98],
                 up: [0, 33],
-            }
+            },
+            direction: "down",
+            animationIndex: 0,
+            playerDim: PLAYER_DIM,
+            name: "Ranger",
+            step: PLAYER_STEP,
+            canvas: canvas,
         })];
         const game = new Game({
             id: gameId,

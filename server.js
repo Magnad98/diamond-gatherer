@@ -1,6 +1,7 @@
 //class imports
 const Player = require("./public/js/classes/Player.js");
 const Validator = require("./public/js/classes/Validator.js");
+const Game = require("./public/js/classes/Game.js");
 
 const express = require("express");
 const app = express();
@@ -15,6 +16,28 @@ let validator = new Validator();
 
 let counter = 0;
 let usersOnline = 0;
+
+const chatUsers = {};
+const games = {};
+
+const gameLoop = (id) => {
+    const objectsForDraw = [];
+    games[id].players.forEach((player) => {
+        objectsForDraw.push(player.forDraw());
+    });
+    io.to(id).emit("game-loop", objectsForDraw);
+}
+const startPlayerMovement = (key) => {
+    let start = false;
+    let bindedKeys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+
+    bindedKeys.forEach((bindedKey) => {
+        console.log(key, key == bindedKey);
+        if (key == bindedKey)
+            start = true;
+    });
+    return start;
+};
 
 http.listen(port, () => {
     console.log(`[SERVER STARTED AT PORT ${port}]`);
@@ -83,6 +106,7 @@ io.on("connection", (socket) => {
         const game = new Game({
             id: gameId,
             players: players,
+            gameLoop: gameLoop,
         });
         games[gameId] = game;
         console.log(`[User joined ${gameId}] room`);
@@ -90,17 +114,20 @@ io.on("connection", (socket) => {
     });
 
     socket.on("key-pressed", (key) => {
-        const gameId = "game-" + socket.id;
-        const ranger = games[gameId].players[0];
-        switch (key) {
-            case "ArrowUp":
-                { validator.validateUp(ranger); break; }
-            case "ArrowDown":
-                { validator.validateDown(ranger); break; }
-            case "ArrowLeft":
-                { validator.validateLeft(ranger); break; }
-            case "ArrowRight":
-                { validator.validateRight(ranger); break; }
+        if (startPlayerMovement(key)) {
+            const gameId = "game-" + socket.id;
+            const ranger = games[gameId].players[0];
+
+            switch (key) {
+                case "ArrowUp":
+                    { validator.validateUp(ranger); break; }
+                case "ArrowDown":
+                    { validator.validateDown(ranger); break; }
+                case "ArrowLeft":
+                    { validator.validateLeft(ranger); break; }
+                case "ArrowRight":
+                    { validator.validateRight(ranger); break; }
+            }
         }
     });
 
@@ -113,30 +140,3 @@ io.on("connection", (socket) => {
         socket.emit("incremented-counter-value", counter);
     });
 });
-
-class Game {
-    constructor(options) {
-        this.id = options.id;
-        this.players = options.players;
-        this.start();
-    }
-    start() {
-        setInterval(
-            () => {
-                gameLoop(this.id)
-            },
-            1000 / 60
-        );
-    }
-}
-
-const gameLoop = (id) => {
-    const objectsForDraw = [];
-    games[id].players.forEach((player) => {
-        objectsForDraw.push(player.forDraw());
-    });
-    io.to(id).emit("game-loop", objectsForDraw);
-}
-
-const chatUsers = {};
-const games = {};

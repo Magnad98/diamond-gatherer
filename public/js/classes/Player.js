@@ -11,6 +11,7 @@ class Player {
 
         this.name = options.name;
 
+        this.step = options.step;
         this.topLimit = options.step;
         this.botLimit = options.canvas.height - options.playerDim - options.step;
         this.leftLimit = options.step;

@@ -1,5 +1,6 @@
 //class imports
 const Player = require("./public/js/classes/Player.js");
+const Validator = require("./public/js/classes/Validator.js");
 
 const express = require("express");
 const app = express();
@@ -10,6 +11,7 @@ const port = 5000;
 
 const PLAYER_DIM = 32;
 const PLAYER_STEP = 10;
+let validator = new Validator();
 
 http.listen(5000, () => {
     console.log('[SERVER STARTED AT PORT 5000]');
@@ -78,13 +80,13 @@ io.on("connection", (socket) => {
         const ranger = games[gameId].players[0];
         switch (key) {
             case "ArrowUp":
-                { ranger.y >= ranger.topLimit ? ranger.y -= PLAYER_STEP : console.log(`${ranger.name}: Top limit reached`); break; }
+                { validator.validateUp(ranger); break; }
             case "ArrowDown":
-                { ranger.y <= ranger.botLimit ? ranger.y += PLAYER_STEP : console.log(`${ranger.name}: Bot limit reached`); break; }
+                { validator.validateDown(ranger); break; }
             case "ArrowLeft":
-                { ranger.x >= ranger.leftLimit ? ranger.x -= PLAYER_STEP : console.log(`${ranger.name}: Left limit reached`); break; }
+                { validator.validateLeft(ranger); break; }
             case "ArrowRight":
-                { ranger.x <= ranger.rightLimit ? ranger.x += PLAYER_STEP : console.log(`${ranger.name}: Right limit reached`); break; }
+                { validator.validateRight(ranger); break; }
         }
     });
 });

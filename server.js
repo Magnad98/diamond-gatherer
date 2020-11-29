@@ -9,6 +9,7 @@ const io = require("socket.io")(http);
 const port = 5000;
 
 const PLAYER_DIM = 32;
+const PLAYER_STEP = 10;
 
 http.listen(5000, () => {
     console.log('[SERVER STARTED AT PORT 5000]');
@@ -42,10 +43,13 @@ io.on("connection", (socket) => {
         socket.emit("menu");
     });
 
-    socket.on("create-game", (gameName) => {
+    socket.on("create-game", (gameName, canvas) => {
         console.log("[NEW GAME CREATED]");
         const gameId = "game-" + socket.id;
         const players = [new Player({
+            name: "Ranger",
+            canvas: canvas,
+            step: PLAYER_STEP,
             playerDim: PLAYER_DIM,
             x: 80,
             y: 127,
@@ -71,28 +75,16 @@ io.on("connection", (socket) => {
 
     socket.on("key-pressed", (key) => {
         const gameId = "game-" + socket.id;
-        const player = games[gameId].players[0];
+        const ranger = games[gameId].players[0];
         switch (key) {
             case "ArrowUp":
-                {
-                    player.y -= 10;
-                    break;
-                }
+                { ranger.y >= ranger.topLimit ? ranger.y -= PLAYER_STEP : console.log(`${ranger.name}: Top limit reached`); break; }
             case "ArrowDown":
-                {
-                    player.y += 10;
-                    break;
-                }
+                { ranger.y <= ranger.botLimit ? ranger.y += PLAYER_STEP : console.log(`${ranger.name}: Bot limit reached`); break; }
             case "ArrowLeft":
-                {
-                    player.x -= 10;
-                    break;
-                }
+                { ranger.x >= ranger.leftLimit ? ranger.x -= PLAYER_STEP : console.log(`${ranger.name}: Left limit reached`); break; }
             case "ArrowRight":
-                {
-                    player.x += 10;
-                    break;
-                }
+                { ranger.x <= ranger.rightLimit ? ranger.x += PLAYER_STEP : console.log(`${ranger.name}: Right limit reached`); break; }
         }
     });
 });

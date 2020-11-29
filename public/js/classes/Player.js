@@ -8,6 +8,13 @@ class Player {
         this.imageId = options.imageId;
         this.direction = options.direction;
         this.imageStartPoints = options.imageStartPoints;
+
+        this.name = options.name;
+
+        this.topLimit = options.step;
+        this.botLimit = options.canvas.height - options.playerDim - options.step;
+        this.leftLimit = options.step;
+        this.rightLimit = options.canvas.width - options.playerDim - options.step;
     }
     forDraw() {
         return {

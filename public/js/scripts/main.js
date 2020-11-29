@@ -49,7 +49,11 @@ document.getElementById("create-game-button").addEventListener("click", () => {
     const gameName = input.value;
     if (gameName.length > 0) {
         document.getElementById("game-name-missing").classList.add("display-none");
-        socket.emit("create-game", gameName);
+        socket.emit("create-game",
+            gameName, {
+                width: canvas.width,
+                height: canvas.height
+            });
     } else {
         document.getElementById("game-name-missing").classList.remove("display-none");
     }

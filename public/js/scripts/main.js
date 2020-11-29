@@ -68,3 +68,7 @@ socket.on("game-loop", (objectsForDraw) => {
         );
     });
 });
+
+document.addEventListener("keydown", (event) => {
+    socket.emit("key-pressed", event.key);
+});

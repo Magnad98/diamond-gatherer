@@ -68,6 +68,33 @@ io.on("connection", (socket) => {
         console.log(`[User joined ${gameId}] room`);
         socket.join(gameId);
     });
+
+    socket.on("key-pressed", (key) => {
+        const gameId = "game-" + socket.id;
+        const player = games[gameId].players[0];
+        switch (key) {
+            case "ArrowUp":
+                {
+                    player.y -= 10;
+                    break;
+                }
+            case "ArrowDown":
+                {
+                    player.y += 10;
+                    break;
+                }
+            case "ArrowLeft":
+                {
+                    player.x -= 10;
+                    break;
+                }
+            case "ArrowRight":
+                {
+                    player.x += 10;
+                    break;
+                }
+        }
+    });
 });
 
 class Game {

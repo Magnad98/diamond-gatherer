@@ -13,7 +13,6 @@ const chatUsers = {};
 const games = {};
 
 let counter = 0;
-let usersOnline = 0;
 
 const gameLoop = (id) => {
     const objectsForDraw = [];
@@ -45,17 +44,15 @@ io.on("connection", (socket) => {
         chatUsers[socket.id] = userName;
         socket.join("chat");
         socket.emit("joined-chat");
-        usersOnline++;
-        socket.join("users-online");
         io.to("chat").emit("new-message", userName, "joined chat");
-        io.to("users-online").emit("update-users-online", usersOnline);
+        io.to("chat").emit("update-users-online", Object.keys(chatUsers).length);
     });
 
     socket.on("send-message", (message, color) => {
         let userName = chatUsers[socket.id];
         console.log(`[USER ${userName} SENT THE MESSAGE ${message}]`);
         io.to("chat").emit("new-message", `${chatUsers[socket.id]}: `, message, color);
-        io.to("users-online").emit("update-users-online", usersOnline);
+        io.to("chat").emit("update-users-online", Object.keys(chatUsers).length);
     });
 
     socket.on("leave-chat", () => {
@@ -64,10 +61,8 @@ io.on("connection", (socket) => {
         delete chatUsers[socket.id];
         socket.leave("chat");
         socket.emit("menu");
-        usersOnline--;
-        socket.leave("users-online");
         io.to("chat").emit("new-message", userName, "left chat");
-        io.to("users-online").emit("update-users-online", usersOnline);
+        io.to("chat").emit("update-users-online", Object.keys(chatUsers).length);
     });
 
     socket.on("create-game", (gameName) => {

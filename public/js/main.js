@@ -96,14 +96,14 @@ document.addEventListener("keydown", (event) => {
     socket.emit("key-pressed", event.key);
 });
 
-document.getElementById("increment-counter-button").addEventListener("click", () => {
+window.addEventListener("load", () => {
     socket.emit("get-counter-value");
 });
 
-socket.on("counter-value", (counterValue) => {
-    socket.emit("increment-counter", counterValue + 1);
+document.getElementById("increment-counter-button").addEventListener("click", () => {
+    socket.emit("increment-counter");
 });
 
-socket.on("incremented-counter-value", (incrementedCounterValue) => {
-    document.getElementById("show-counter").innerHTML = incrementedCounterValue;
+socket.on("counter-value", (counterValue) => {
+    document.getElementById("show-counter").innerHTML = counterValue;
 });

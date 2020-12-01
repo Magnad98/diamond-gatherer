@@ -1,7 +1,7 @@
 //class imports
-const Player = require("./public/js/classes/Player.js");
-const Validator = require("./public/js/classes/Validator.js");
-const Game = require("./public/js/classes/Game.js");
+const Player = require("./Models/Player.js");
+const Validator = require("./Models/Validator.js");
+const Game = require("./Models/Game.js");
 
 const express = require("express");
 const app = express();
@@ -15,7 +15,6 @@ const PLAYER_STEP = 10;
 let validator = new Validator();
 
 let counter = 0;
-let usersOnline = 0;
 
 const chatUsers = {};
 const games = {};
@@ -45,7 +44,11 @@ http.listen(port, () => {
 
 app.get("/", (request, response) => {
     response.sendFile(__dirname + "/index.html");
-})
+});
+
+app.get("/about", (request, response) => {
+    response.sendFile(__dirname + "/about.html");
+});
 
 app.use(express.static(__dirname + "/public"));
 
@@ -57,17 +60,15 @@ io.on("connection", (socket) => {
         chatUsers[socket.id] = userName;
         socket.join("chat");
         socket.emit("joined-chat");
-        usersOnline++;
-        socket.join("users-online");
         io.to("chat").emit("new-message", userName, "joined chat");
-        io.to("users-online").emit("update-users-online", usersOnline);
+        io.to("chat").emit("update-users-online", Object.keys(chatUsers).length);
     });
 
     socket.on("send-message", (message, color) => {
         let userName = chatUsers[socket.id];
         console.log(`[USER ${userName} SENT THE MESSAGE ${message}]`);
         io.to("chat").emit("new-message", `${chatUsers[socket.id]}: `, message, color);
-        io.to("users-online").emit("update-users-online", usersOnline);
+        io.to("chat").emit("update-users-online", Object.keys(chatUsers).length);
     });
 
     socket.on("leave-chat", () => {
@@ -76,10 +77,8 @@ io.on("connection", (socket) => {
         delete chatUsers[socket.id];
         socket.leave("chat");
         socket.emit("menu");
-        usersOnline--;
-        socket.leave("users-online");
         io.to("chat").emit("new-message", userName, "left chat");
-        io.to("users-online").emit("update-users-online", usersOnline);
+        io.to("chat").emit("update-users-online", Object.keys(chatUsers).length);
     });
 
     socket.on("create-game", (gameName, canvas) => {
@@ -133,11 +132,11 @@ io.on("connection", (socket) => {
     });
 
     socket.on("get-counter-value", () => {
-        socket.emit("counter-value", counter);
+        socket.join("counterRoom");
+        io.to("counterRoom").emit("counter-value", counter);
     });
-
-    socket.on("increment-counter", (incrementedCounter) => {
-        counter = incrementedCounter;
-        socket.emit("incremented-counter-value", counter);
+    socket.on("increment-counter", () => {
+        counter++;
+        io.to("counterRoom").emit("counter-value", counter);
     });
 });

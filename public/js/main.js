@@ -89,13 +89,9 @@ socket.on("game-loop", (objectsForDraw) => {
 });
 
 document.getElementById("increment-counter-button").addEventListener("click", () => {
-    socket.emit("get-counter-value");
+    socket.emit("increment-counter");
 });
 
 socket.on("counter-value", (counterValue) => {
-    socket.emit("increment-counter", counterValue + 1);
-});
-
-socket.on("incremented-counter-value", (incrementedCounterValue) => {
-    document.getElementById("show-counter").innerHTML = incrementedCounterValue;
+    document.getElementById("show-counter").innerHTML = counterValue;
 });

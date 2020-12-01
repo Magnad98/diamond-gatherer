@@ -98,8 +98,12 @@ io.on("connection", (socket) => {
         socket.join(gameId);
     });
 
+    socket.on("get-counter-value", () => {
+        socket.join("counterRoom");
+        io.to("counterRoom").emit("counter-value", counter);
+    });
     socket.on("increment-counter", () => {
         counter++;
-        socket.emit("counter-value", counter);
+        io.to("counterRoom").emit("counter-value", counter);
     });
 });

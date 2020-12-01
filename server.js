@@ -1,5 +1,5 @@
-const Player = require("./public/js/classes/Player.js");
-const Game = require("./public/js/classes/Game.js");
+const Player = require("./Models/Player.js");
+const Game = require("./Models/Game.js");
 
 const express = require("express");
 const app = express();

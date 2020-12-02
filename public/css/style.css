@@ -1,3 +1,15 @@
+/* p {
+    background-color: red;
+}
+
+div {
+    border: 1px solid black;
+}
+
+canvas {
+    border: 2px solid blue;
+} */
+
 .display-none {
     display: none;
 }
@@ -25,4 +37,11 @@
 
 #game-container {
     border: 1px solid black;
+}
+
+.game-element {
+    border: 1px solid black;
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
 }

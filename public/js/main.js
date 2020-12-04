@@ -166,7 +166,7 @@ socket.on("add-game-to-list", (options) => {
     gameElementContainer.id = options.gameId;
 
     const gameNameElement = document.createElement("p");
-    gameNameElement.innerHTML = options.gameNamel;
+    gameNameElement.innerHTML = options.gameName;
 
     const joinGameButton = document.createElement("button");
     joinGameButton.innerHTML = "Join Game!";

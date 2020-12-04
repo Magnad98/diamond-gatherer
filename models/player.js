@@ -47,6 +47,7 @@ class Player {
                 this.dx = 3;
                 break;
         }
+        this.direction = direction;
     }
     move() {
         const newX = this.x + this.dx;
@@ -56,7 +57,7 @@ class Player {
         }
 
         const newY = this.y + this.dy;
-        if (newY != this.y && newY > 0 && (newY + PLAYER_DIM.width) < MAP.width) {
+        if (newY != this.y && newY > 0 && (newY + PLAYER_DIM.height) < MAP.height) {
             this.y += this.dy;
             this.step = Math.floor(this.y / PLAYER_DIM.height) % 2;
         }

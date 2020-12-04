@@ -23,8 +23,8 @@ io.on("connection", (socket) => {
     console.log("[SOCKET CONNECTED]" + socket.id);
     socket.join("menu");
     Object.keys(games).forEach((gameId) => {
-        if (game[gameId].players.length == 1) {
-            socket.emit("add-game-to-list", { gameName: gamse[gameId].name, gameId: gameId });
+        if (games[gameId].players.length == 1) {
+            socket.emit("add-game-to-list", { gameName: games[gameId].name, gameId: gameId });
         }
     });
 
@@ -48,7 +48,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("create-game", (gameName) => {
-        console.log("[NEW GAME CREATED]");
+        console.log(`[NEW GAME CREATED WITH NAME ${gameName}]`);
         const gameId = "game-" + socket.id;
         players[socket.id] = new SpaceRanger({ gameId: gameId, socketId: socket.id });
         const game = new Game({
@@ -62,7 +62,7 @@ io.on("connection", (socket) => {
         io.to("menu").emit("add-game-to-list", {
             gameName: gameName,
             gameId: gameId,
-        })
+        });
     });
 
     socket.on("start-moving-player", (direction) => {
@@ -77,15 +77,15 @@ io.on("connection", (socket) => {
             //console.log("[STOP PLAYER] ", axis);
         }
     });
-    socke.on("join-game", (gameId) => {
+    socket.on("join-game", (gameId) => {
         console.log(`[SOCKET ${socket.id} JOINED GAME ${gameId}]`);
         players[socket.id] = new PinkLady({ gameId: gameId, socketId: socket.id });
-        game[gameId].players.push(players[socket.id]);
+        games[gameId].players.push(players[socket.id]);
         socket.join(gameId);
         io.to("menu").emit("remove-game-from-list", gameId);
     });
 
-    socke.on("disconnect", () => {
+    socket.on("disconnect", () => {
         console.log(`[SOCKET ${socket.id} DISCONNECTED]`);
         if (players[socket.id]) {
             const gameId = players[socket.id].gameId;

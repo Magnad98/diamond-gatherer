@@ -9,6 +9,41 @@ const SpaceRanger = require("./models/space_ranger.js");
 const PinkLady = require("./models/pink_lady.js");
 const Game = require("./models/game.js");
 
+const Employee = require("./models/employee.js");
+
+const createEmployees = () => {
+    const leonard = new Employee({
+        name: "Leonard",
+        age: 30,
+        gender: "male",
+        salary: 2000,
+        vacantion: 24,
+    });
+    const penny = new Employee({
+        name: "Penny",
+        age: 28,
+        gender: "female",
+        salary: 1400,
+        vacantion: 26,
+    });
+
+    leonard.present();
+    penny.present();
+
+    leonard.work();
+    leonard.getSalary();
+    leonard.getSalaryRiseTo(2800);
+    leonard.getSalary();
+    leonard.getVacantion(38);
+
+    penny.work();
+    penny.getSalary();
+    penny.getSalaryRiseTo(1200);
+    penny.getSalary();
+    penny.getVacantion(6);
+}
+createEmployees();
+
 http.listen(port, () => {
     console.log(`[SERVER STARTED AT PORT ${port}]`);
 })

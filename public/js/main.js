@@ -100,6 +100,7 @@ socket.on("menu", () => {
     console.log("You left chat!");
     document.getElementById("menu").classList.remove("display-none");
     document.getElementById("chat-container").classList.add("display-none");
+    //document.getElementById("game-container").classList.add("display-none");
 });
 
 document.getElementById("create-game-button").addEventListener("click", () => {
@@ -186,5 +187,21 @@ socket.on("remove-game-from-list", (gameId) => {
 });
 
 socket.on("game-over", (reason) => {
+    //send message to console
     console.log("Game Over", reason);
-})
+
+    //make background black
+    context.globalAlpha = 0.6;
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    context.globalAlpha = 1.0;
+
+    //write game over
+    context.font = "64px Comic Sans MS";
+    context.fillStyle = "white";
+    context.textAlign = "center";
+    context.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
+});
+
+/*document.getElementById("leave-game-button").addEventListener("click", () => {
+    socket.emit("leave-game");
+});*/

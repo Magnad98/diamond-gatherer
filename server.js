@@ -66,11 +66,10 @@ io.on("connection", (socket) => {
         io.to("menu").emit("remove-game-from-list", gameId);
     });
 
-    /*socket.on("leave-game", () => {
-        console.log("[USER LEFT GAME]", socket.id);
-        leaveGame();
+    socket.on("leave-game", () => {
+        socket.emit("back-to-menu");
     });
-*/
+
     socket.on("disconnect", () => {
         console.log(`[SOCKET ${socket.id} DISCONNECTED]`);
         if (players[socket.id]) {
@@ -88,11 +87,6 @@ io.on("connection", (socket) => {
         }
     });
 });
-
-/*const leaveGame = (id) => {
-
-};
-*/
 const gameLoop = (id) => {
     if (games[id]) {
         games[id].update();

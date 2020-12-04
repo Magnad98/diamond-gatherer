@@ -28,25 +28,6 @@ io.on("connection", (socket) => {
         }
     });
 
-    socket.on("join-chat", (userName) => {
-        console.log("[USER JOINED CHAT]", socket.id, userName);
-        chatUsers[socket.id] = userName;
-        socket.join("chat");
-        socket.emit("joined-chat");
-    });
-
-    socket.on("send-message", (message) => {
-        console.log("[USER SENT MESSAGE]", message);
-        io.to("chat").emit("new-message", `${chatUsers[socket.id]}: ${message}`);
-    });
-
-    socket.on("leave-chat", () => {
-        console.log("[USER LEFT CHAT]", socket.id);
-        delete chatUsers[socket.id];
-        socket.leave("chat");
-        socket.emit("menu");
-    });
-
     socket.on("create-game", (gameName) => {
         console.log(`[NEW GAME CREATED WITH NAME ${gameName}]`);
         const gameId = "game-" + socket.id;
@@ -114,7 +95,6 @@ const gameLoop = (id) => {
     }
 }
 
-const chatUsers = {};
 const games = {};
 const players = {};
 

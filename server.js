@@ -11,6 +11,11 @@ const Game = require("./models/game.js");
 
 const Employee = require("./models/employee.js");
 
+const Homework4 = () => {
+    createEmployees();
+    highOrderFunctions();
+};
+
 const createEmployees = () => {
     const leonard = new Employee({
         name: "Leonard",
@@ -41,8 +46,25 @@ const createEmployees = () => {
     penny.getSalaryRiseTo(1200);
     penny.getSalary();
     penny.getVacantion(6);
-}
-createEmployees();
+};
+
+const highOrderFunctions = () => {
+    let arr = [1, -2, 6, -7, 10, 9, 14, true, false, null, undefined];
+
+    console.log("result: ",
+        arr.filter((element) => {
+            return typeof element == "number";
+        })
+        .map((element) => {
+            return element * 10;
+        })
+        .reduce((sum, element) => {
+            return sum + element;
+        })
+    );
+};
+
+Homework4();
 
 http.listen(port, () => {
     console.log(`[SERVER STARTED AT PORT ${port}]`);

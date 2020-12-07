@@ -32,19 +32,19 @@ const createEmployees = () => {
         vacantion: 26,
     });
 
-    leonard.present()
-        .work()
-        .getSalary()
-        .getSalaryRiseTo(2800)
-        .getSalary()
-        .getVacantion(38);
+    leonard.present();
+    leonard.work();
+    leonard.getSalary();
+    leonard.getSalaryRiseTo(2800);
+    leonard.getSalary();
+    leonard.getVacantion(38);
 
-    penny.present()
-        .work()
-        .getSalary()
-        .getSalaryRiseTo(1200)
-        .getSalary()
-        .getVacantion(6);
+    penny.present();
+    penny.work();
+    penny.getSalary();
+    penny.getSalaryRiseTo(1200);
+    penny.getSalary();
+    penny.getVacantion(6);
 };
 
 const highOrderFunctions = () => {

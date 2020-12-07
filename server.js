@@ -32,35 +32,28 @@ const createEmployees = () => {
         vacantion: 26,
     });
 
-    leonard.present();
-    penny.present();
+    leonard.present()
+        .work()
+        .getSalary()
+        .getSalaryRiseTo(2800)
+        .getSalary()
+        .getVacantion(38);
 
-    leonard.work();
-    leonard.getSalary();
-    leonard.getSalaryRiseTo(2800);
-    leonard.getSalary();
-    leonard.getVacantion(38);
-
-    penny.work();
-    penny.getSalary();
-    penny.getSalaryRiseTo(1200);
-    penny.getSalary();
-    penny.getVacantion(6);
+    penny.present()
+        .work()
+        .getSalary()
+        .getSalaryRiseTo(1200)
+        .getSalary()
+        .getVacantion(6);
 };
 
 const highOrderFunctions = () => {
     let arr = [1, -2, 6, -7, 10, 9, 14, true, false, null, undefined];
 
     console.log("result: ",
-        arr.filter((element) => {
-            return typeof element == "number";
-        })
-        .map((element) => {
-            return element * 10;
-        })
-        .reduce((sum, element) => {
-            return sum + element;
-        })
+        arr.filter(element => typeof element === "number")
+        .map(element => element * 10)
+        .reduce((sum, element) => sum + element)
     );
 };
 

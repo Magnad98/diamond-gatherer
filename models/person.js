@@ -6,9 +6,11 @@ class Person {
     }
     present() {
         console.log(`Hi, my name is ${this.name}, I'm ${this.age} years old and I'm a ${this.gender}.`);
+        return this;
     }
     work() {
         console.log(`${this.name} is working.`);
+        return this;
     }
 }
 module.exports = Person;

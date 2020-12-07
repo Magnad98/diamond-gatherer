@@ -8,6 +8,7 @@ class Employee extends Person {
     }
     getSalary() {
         console.log(`${this.name}: Yay! I just got paid \$${this.salary}.`);
+        return this;
     }
     getSalaryRiseTo(newSalary) {
         if (this.salary < newSalary) {
@@ -15,6 +16,7 @@ class Employee extends Person {
             console.log(`${this.name}: My salary has been risen to ${this.salary}.`);
         } else
             console.log(`${this.name}: \$${newSalary} is not a salary rise for me!`);
+        return this;
     }
     getVacantion(days) {
         if (this.vacantion >= days) {
@@ -22,6 +24,7 @@ class Employee extends Person {
             console.log(`${this.name}: I'm going on a vacantion for ${days} days!`);
         } else
             console.log(`${this.name}: I only have ${this.vacantion} vacantion days left.`);
+        return this;
     }
 }
 module.exports = Employee;

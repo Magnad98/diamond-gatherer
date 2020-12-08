@@ -213,4 +213,5 @@ socket.on("back-to-menu", () => {
     console.log("You left game!");
     document.getElementById("menu").classList.remove("display-none");
     document.getElementById("game-container").classList.add("display-none");
+    document.getElementById("leave-game-button").classList.add("display-none");
 });

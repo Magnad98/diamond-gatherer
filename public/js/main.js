@@ -97,9 +97,10 @@ document.getElementById("leave-chat-button").addEventListener("click", () => {
 });
 
 socket.on("menu", () => {
-    console.log("You left chat!");
+    //console.log("You left chat!");
     document.getElementById("menu").classList.remove("display-none");
     document.getElementById("chat-container").classList.add("display-none");
+    document.getElementById("game-container").classList.add("display-none");
 });
 
 document.getElementById("create-game-button").addEventListener("click", () => {
@@ -113,32 +114,54 @@ document.getElementById("create-game-button").addEventListener("click", () => {
     }
 });
 
-socket.on("game-loop", (objectsForDraw) => {
+socket.on("game-loop", (data) => {
     document.getElementById("menu").classList.add("display-none");
+    document.getElementById("back-to-menu").classList.remove("display-none");
     document.getElementById("game-container").classList.remove("display-none");
     context.drawImage(document.getElementById("map-image"), 0, 0);
 
-    objectsForDraw.forEach((objectsForDraw) => {
+    data.objectsForDraw.forEach((objectsForDraw) => {
         context.drawImage(
             document.getElementById(objectsForDraw.imageId),
             ...objectsForDraw.drawImageParameters
         );
     });
+
+    if (data.gameInProgress) {
+        document.getElementById("waiting-for-players").classList.add("display-none");
+        document.getElementById("score-container").classList.remove("display-none");
+        document.getElementById("space-ranger-score").innerHTML = data.score["space-ranger"];
+        document.getElementById("pink-lady-score").innerHTML = data.score["pink-lady"];
+    } else {
+        document.getElementById("waiting-for-players").classList.remove("display-none");
+        document.getElementById("score-container").classList.add("display-none");
+    }
 });
 
 document.addEventListener("keydown", (event) => {
     switch (event.key) {
         case "ArrowUp":
-            socket.emit("start-moving-player", "up");
-            break;
+            {
+                socket.emit("start-moving-player", "up");
+                break;
+            }
         case "ArrowDown":
-            socket.emit("start-moving-player", "down");
-            break;
+            {
+                socket.emit("start-moving-player", "down");
+                break;
+            }
         case "ArrowLeft":
-            socket.emit("start-moving-player", "left");
-            break;
+            {
+                socket.emit("start-moving-player", "left");
+                break;
+            }
         case "ArrowRight":
-            socket.emit("start-moving-player", "right");
+            {
+                socket.emit("start-moving-player", "right");
+                break;
+            }
+        case " ":
+            socket.emit("attack", );
             break;
     }
 });
@@ -185,6 +208,13 @@ socket.on("remove-game-from-list", (gameId) => {
     document.getElementById(gameId).classList.add("display-none"); // delete instead
 });
 
-socket.on("game-over", (reason) => {
+socket.on("game-over", (reason, gameId) => {
     console.log("Game Over", reason);
-})
+    context.drawImage(document.getElementById("player-disconnected", 0, 0));
+    document.getElementById("back-to-menu").classList.remove("display-none");
+    document.getElementById("back-to-menu").dataset.gameId = gameId;
+});
+
+document.getElementById("back-to-menu").addEventListener("click", () => {
+    socket.emit("back-to-menu", document.getElementById("back-to-menu").dataset.gameId);
+});

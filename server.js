@@ -8,6 +8,7 @@ const port = 5000;
 const SpaceRanger = require("./models/space_ranger.js");
 const PinkLady = require("./models/pink_lady.js");
 const Game = require("./models/game.js");
+const Bullet = require("./models/bullet.js");
 
 http.listen(port, () => {
     console.log(`[SERVER STARTED AT PORT ${port}]`);
@@ -56,6 +57,7 @@ io.on("connection", (socket) => {
             players: [players[socket.id]],
             name: gameName,
         });
+        game.generateDiamonds();
         games[gameId] = game;
         console.log(`[User joined ${gameId}] room`);
         socket.join(gameId);
@@ -67,12 +69,18 @@ io.on("connection", (socket) => {
 
     socket.on("start-moving-player", (direction) => {
         if (players[socket.id]) {
+            if (games[players[socket.id].player.length != 2]) {
+                return;
+            }
             players[socket.id].startMoving(direction);
             //console.log("[MOVE PLAYER] ", direction);
         }
     });
     socket.on("stop-moving-player", (axis) => {
         if (players[socket.id]) {
+            if (games[players[socket.id].player.length != 2]) {
+                return;
+            }
             players[socket.id].stopMoving(axis);
             //console.log("[STOP PLAYER] ", axis);
         }
@@ -81,6 +89,7 @@ io.on("connection", (socket) => {
         console.log(`[SOCKET ${socket.id} JOINED GAME ${gameId}]`);
         players[socket.id] = new PinkLady({ gameId: gameId, socketId: socket.id });
         games[gameId].players.push(players[socket.id]);
+        games[gameId].generateDiamonds();
         socket.join(gameId);
         io.to("menu").emit("remove-game-from-list", gameId);
     });
@@ -98,24 +107,58 @@ io.on("connection", (socket) => {
             playersToRemoveIds.forEach((playerToRemoveId) => {
                 delete players[playerToRemoveId];
             });
-            io.to(gameId).emit("game-over", "A player disconnected");
+            io.to(gameId).emit("game-over", "A player disconnected", gameId);
         }
     });
+    socket.on("back-to-menu", (gameId) => {
+        socket.leave(gameId);
+        socket.emit("menu");
+    });
+    socket.on("attack", () => {
+        if (players[socket.id]) {
+            if (games[players[socket.id].player.length != 2]) {
+                return;
+            }
+            const game = gamse[players[socket.id].gameId];
+            game.bullets.push(new bullets(players[socket.id]));
+        }
+    })
 });
 
-const gameLoop = (id) => {
-    if (games[id]) {
-        games[id].update();
-        const objectsForDraw = [];
-        games[id].players.forEach((player) => {
-            objectsForDraw.push(player.forDraw());
-        });
-        io.to(id).emit("game-loop", objectsForDraw);
+const gameLoop = (roomId) => {
+    const game = games[roomId];
+    if (game) {
+        game.update();
+
+        if (game.over) {
+            //????? ceva cu "disconnect:"
+        } else {
+            const objectsForDraw = [];
+            game.players.forEach((player) => {
+                objectsForDraw.push(player.forDraw());
+            });
+            game.diamonds.forEach((diamond) => {
+                objectsForDraw.push(diamond.forDraw());
+            });
+            const data = {
+                objectsForDraw: objectsForDraw,
+                gameInProgress: game.players.length == 2,
+            }
+            if (data.gameInProgress) {
+                data.score = {
+                    "space-ranger": game.players[0].score,
+                    "pink-lady": game.players[0].score,
+                }
+            }
+            io.to(roomId).emit("game-loop", data);
+        }
     }
 }
 
 const chatUsers = {};
 const games = {};
 const players = {};
+const bullets = {};
 
 module.exports.gameLoop = gameLoop;
+module.exports.gameLoop = games;

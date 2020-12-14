@@ -161,7 +161,7 @@ document.addEventListener("keydown", (event) => {
                 break;
             }
         case " ":
-            socket.emit("attack", );
+            socket.emit("attack");
             break;
     }
 });
@@ -208,11 +208,11 @@ socket.on("remove-game-from-list", (gameId) => {
     document.getElementById(gameId).classList.add("display-none"); // delete instead
 });
 
-socket.on("game-over", (reason, gameId) => {
-    console.log("Game Over", reason);
-    context.drawImage(document.getElementById("player-disconnected", 0, 0));
+socket.on("game-over", (imageId, gameId) => {
+    context.drawImage(document.getElementById(imageId), 0, 0);
     document.getElementById("back-to-menu").classList.remove("display-none");
     document.getElementById("back-to-menu").dataset.gameId = gameId;
+    document.getElementById("score-container").classList.add("display-none");
 });
 
 document.getElementById("back-to-menu").addEventListener("click", () => {

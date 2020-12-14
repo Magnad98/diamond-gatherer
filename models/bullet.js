@@ -1,4 +1,4 @@
-e coursclass Bullet {
+class Bullet {
     constructor(player) {
         this.player = player;
         this.x = player.x + player.width / 2;
@@ -6,12 +6,12 @@ e coursclass Bullet {
         this.dx = 0;
         this.dy = 0;
         this.speed = 5;
-        this.image = player.imageId + "-bullet"; ///here
+        this.imageId = player.imageId + "-bullet";
         this.setSpeed();
         this.distance = 200;
     }
     setSpeed() {
-        switch (this.player) {
+        switch (this.player.direction) {
             case "up":
                 this.dy = -this.speed;
                 break;
@@ -27,16 +27,18 @@ e coursclass Bullet {
         }
     }
     forDraw() {
-
+        return {
+            imageId: this.imageId,
+            drawImageParameters: [
+                this.x,
+                this.y
+            ]
+        };
     }
     update() {
-        if (this.distance <= 0) {
-
-        } else {
-            this.x = this.x + this.dx;
-            this.y = this.y + this.dy
-            this.distance -= this.speed;
-        }
+        this.x += this.dx;
+        this.y += this.dy;
+        this.distance -= this.speed;
     }
 }
 

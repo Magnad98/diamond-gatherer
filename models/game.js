@@ -7,27 +7,33 @@ class Game {
         this.players = options.players;
         this.name = options.name;
         this.diamonds = [];
+        this.bullets = [];
         this.totalDiamonds = 3;
+        this.over = false;
         this.start();
     }
     start() {
         this.gameInterval = setInterval(
             () => {
-                server.gameLoop(this.id)
+                server.gameLoop(this.id);
             },
             1000 / 60
         );
     }
     update() {
-        if (this.players[0].score + this.players[1].score === this.score.totalDiamonds) {
+        if (this.inProgress() && this.players[0].score + this.players[1].score === this.totalDiamonds) {
             this.over = true;
             this.winner = this.players[0].score > this.players[1].score ? "space-ranger" : "pink-lady";
+            return;
         }
         this.players.forEach((player) => {
             player.update();
         });
-        this.bullets.forEach((player) => {
-            bullets.update();
+        this.bullets.forEach((bullet, index) => {
+            if (bullet.distance <= 0)
+                delete this.bullets[index];
+            else
+                bullets.update();
         });
     }
     generateDiamonds() {
@@ -38,4 +44,5 @@ class Game {
         return this.players.length == 2;
     }
 }
+
 module.exports = Game;

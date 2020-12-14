@@ -28,4 +28,19 @@
 + Game List
 + Join Game
 + Remove game from list when there are two players
-1/2 - Game Over on Disconnect
+
+# Curs 5
++ Game Over on Disconnect
++ Diamond generation
++ Diamond Collision
++ Base Collision
++ Wait for second player before start
++ Score
++ Game Over when all diamonds are collected
++ Attack functionality
+
+# Curs 6
+- Single Bullet per player
+- HP
+- Bullet collision with opponent
+- Game Over when a player dies

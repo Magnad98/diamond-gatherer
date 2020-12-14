@@ -57,7 +57,6 @@ io.on("connection", (socket) => {
             players: [players[socket.id]],
             name: gameName,
         });
-        game.generateDiamonds();
         games[gameId] = game;
         console.log(`[User joined ${gameId}] room`);
         socket.join(gameId);
@@ -69,7 +68,7 @@ io.on("connection", (socket) => {
 
     socket.on("start-moving-player", (direction) => {
         if (players[socket.id]) {
-            if (games[players[socket.id].player.length != 2]) {
+            if (games[players[socket.id].gameId].players.length != 2) {
                 return;
             }
             players[socket.id].startMoving(direction);
@@ -78,7 +77,7 @@ io.on("connection", (socket) => {
     });
     socket.on("stop-moving-player", (axis) => {
         if (players[socket.id]) {
-            if (games[players[socket.id].player.length != 2]) {
+            if (games[players[socket.id].gameId].players.length != 2) {
                 return;
             }
             players[socket.id].stopMoving(axis);
@@ -102,7 +101,7 @@ io.on("connection", (socket) => {
             const playersToRemoveIds = game.players.map((player) => {
                 return player.socketId;
             });
-            clearInterval(game.interval);
+            clearInterval(game.gameInterval);
             delete games[gameId];
             playersToRemoveIds.forEach((playerToRemoveId) => {
                 delete players[playerToRemoveId];
@@ -116,7 +115,7 @@ io.on("connection", (socket) => {
     });
     socket.on("attack", () => {
         if (players[socket.id]) {
-            if (games[players[socket.id].player.length != 2]) {
+            if (games[players[socket.id].gameId].players.length != 2) {
                 return;
             }
             const game = gamse[players[socket.id].gameId];
@@ -131,7 +130,15 @@ const gameLoop = (roomId) => {
         game.update();
 
         if (game.over) {
-            //????? ceva cu "disconnect:"
+            const playersToRemoveIds = game.players.map(function(player) {
+                return player.socketId;
+            })
+            clearInterval(game.gameInterval);
+            delete games[roomId];
+            playersToRemoveIds.forEach(function(playerToRemoveId) {
+                delete players[playerToRemoveId];
+            })
+            io.to(roomId).emit('game-over', game.winner + '-won', roomId);
         } else {
             const objectsForDraw = [];
             game.players.forEach((player) => {
@@ -140,6 +147,9 @@ const gameLoop = (roomId) => {
             game.diamonds.forEach((diamond) => {
                 objectsForDraw.push(diamond.forDraw());
             });
+            game.bullets.forEach(function(bullet) {
+                objectsForDraw.push(bullet.forDraw());
+            });
             const data = {
                 objectsForDraw: objectsForDraw,
                 gameInProgress: game.players.length == 2,
@@ -147,7 +157,7 @@ const gameLoop = (roomId) => {
             if (data.gameInProgress) {
                 data.score = {
                     "space-ranger": game.players[0].score,
-                    "pink-lady": game.players[0].score,
+                    "pink-lady": game.players[1].score,
                 }
             }
             io.to(roomId).emit("game-loop", data);
@@ -161,4 +171,4 @@ const players = {};
 const bullets = {};
 
 module.exports.gameLoop = gameLoop;
-module.exports.gameLoop = games;
+module.exports.games = games;

@@ -1,4 +1,5 @@
 const server = require("../server.js");
+
 const PLAYER_DIM = {
     width: 32,
     height: 32,
@@ -73,12 +74,10 @@ class Player {
     }
     update() {
         this.move();
-        if (!this.hasDiamond) {
-            this.checkDiamondsCollision();
-        } else {
+        if (this.hasDiamond)
             this.checkBaseCollision();
-        }
-
+        else
+            this.checkDiamondsCollision();
     }
     checkDiamondsCollision() {
         const game = server.games[this.gameId];
@@ -97,8 +96,8 @@ class Player {
         }
 
         if (
-            center.x >= diamond.x && center.x <= diamond.x + diamond.width &&
-            center.y >= diamond.y && center.y <= diamond.y + diamond.height
+            diamond.x <= center.x && center.x <= diamond.x + diamond.width &&
+            diamond.y <= center.y && center.y <= diamond.y + diamond.height
         )
             return true;
         return false

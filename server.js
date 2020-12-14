@@ -118,7 +118,7 @@ io.on("connection", (socket) => {
             if (games[players[socket.id].gameId].players.length != 2) {
                 return;
             }
-            const game = gamse[players[socket.id].gameId];
+            const game = games[players[socket.id].gameId];
             game.bullets.push(new bullets(players[socket.id]));
         }
     })

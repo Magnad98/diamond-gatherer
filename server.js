@@ -119,7 +119,14 @@ io.on("connection", (socket) => {
                 return;
             }
             const game = games[players[socket.id].gameId];
-            if (game.bullets.length < 1)
+
+            let maxBulletsPerPlayer = 1;
+            let activeBullets = game.bullets.reduce(
+                (accumulator, bullet) => bullet.imageId.includes(players[socket.id].imageId) ? accumulator + 1 : accumulator,
+                0,
+            );
+
+            if (activeBullets < maxBulletsPerPlayer)
                 game.bullets.push(new Bullet(players[socket.id]));
         }
     })

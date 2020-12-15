@@ -158,6 +158,7 @@ const gameLoop = (roomId) => {
                 data.score = {
                     "space-ranger": game.players[0].score,
                     "pink-lady": game.players[1].score,
+                    "diamonds-left": game.diamonds.length - game.players[0].score - game.players[1].score,
                 }
             }
             io.to(roomId).emit("game-loop", data);

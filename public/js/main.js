@@ -132,6 +132,7 @@ socket.on("game-loop", (data) => {
         document.getElementById("score-container").classList.remove("display-none");
         document.getElementById("space-ranger-score").innerHTML = data.score["space-ranger"];
         document.getElementById("pink-lady-score").innerHTML = data.score["pink-lady"];
+        document.getElementById("diamonds-left").innerHTML = data.score["diamonds-left"];
     } else {
         document.getElementById("waiting-for-players").classList.remove("display-none");
         document.getElementById("score-container").classList.add("display-none");

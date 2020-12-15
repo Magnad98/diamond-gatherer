@@ -1,4 +1,5 @@
 const Player = require("./player.js");
+const constants = require("./constants.js");
 
 class PinkLady extends Player {
     constructor(options) {
@@ -12,12 +13,7 @@ class PinkLady extends Player {
             down: [65, 98],
             up: [0, 33],
         };
-        this.base = {
-            x: 775,
-            y: 481,
-            width: 185,
-            height: 159,
-        }
+        this.base = constants.BASES.PINK_LADY;
     }
 }
 

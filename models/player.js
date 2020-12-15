@@ -1,14 +1,5 @@
 const server = require("../server.js");
-
-const PLAYER_DIM = {
-    width: 32,
-    height: 32,
-}
-
-const MAP = {
-    width: 960,
-    height: 640,
-}
+const constants = require("./constants.js");
 
 class Player {
     constructor(options) {
@@ -20,8 +11,8 @@ class Player {
         this.socketId = options.socketId;
         this.hasDiamond = false;
         this.score = 0;
-        this.width = PLAYER_DIM.width;
-        this.height = PLAYER_DIM.height;
+        this.width = constants.PLAYER_DIM.width;
+        this.height = constants.PLAYER_DIM.height;
 
     }
     forDraw() {
@@ -30,12 +21,12 @@ class Player {
             drawImageParameters: [
                 this.imageStartPoints[this.direction][this.step],
                 0,
-                PLAYER_DIM.width,
-                PLAYER_DIM.height,
+                this.width,
+                this.height,
                 this.x,
                 this.y,
-                PLAYER_DIM.width,
-                PLAYER_DIM.height,
+                this.width,
+                this.height,
             ],
         };
     }
@@ -58,15 +49,15 @@ class Player {
     }
     move() {
         const newX = this.x + this.dx;
-        if (newX != this.x && newX > 0 && (newX + PLAYER_DIM.width) < MAP.width) {
+        if (newX != this.x && newX > 0 && (newX + this.width) < constants.MAP.width) {
             this.x += this.dx;
-            this.step = Math.floor(this.x / PLAYER_DIM.width) % 2;
+            this.step = Math.floor(this.x / this.width) % 2;
         }
 
         const newY = this.y + this.dy;
-        if (newY != this.y && newY > 0 && (newY + PLAYER_DIM.height) < MAP.height) {
+        if (newY != this.y && newY > 0 && (newY + this.height) < constants.MAP.height) {
             this.y += this.dy;
-            this.step = Math.floor(this.y / PLAYER_DIM.height) % 2;
+            this.step = Math.floor(this.y / this.height) % 2;
         }
     }
     stopMoving(axis) {
@@ -91,8 +82,8 @@ class Player {
     }
     collidedWith(diamond) {
         const center = {
-            x: this.x + PLAYER_DIM.width / 2,
-            y: this.y + PLAYER_DIM.height / 2,
+            x: this.x + this.width / 2,
+            y: this.y + this.height / 2,
         }
 
         if (

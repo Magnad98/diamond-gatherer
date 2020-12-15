@@ -1,4 +1,5 @@
 const Player = require("./player");
+const constants = require("./constants.js");
 
 class SpaceRanger extends Player {
     constructor(options) {
@@ -12,12 +13,7 @@ class SpaceRanger extends Player {
             down: [65, 98],
             up: [0, 33],
         };
-        this.base = {
-            x: 0,
-            y: 0,
-            width: 195,
-            height: 191,
-        }
+        this.base = constants.BASES.SPACE_RANGER;
     }
 }
 

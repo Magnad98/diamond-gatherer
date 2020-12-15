@@ -33,7 +33,7 @@ class Game {
             if (bullet.distance <= 0)
                 delete this.bullets[index];
             else
-                bullets.update();
+                bullet.update();
         });
     }
     generateDiamonds() {

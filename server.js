@@ -119,7 +119,7 @@ io.on("connection", (socket) => {
                 return;
             }
             const game = games[players[socket.id].gameId];
-            game.bullets.push(new bullets(players[socket.id]));
+            game.bullets.push(new Bullet(players[socket.id]));
         }
     })
 });

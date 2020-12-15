@@ -31,7 +31,7 @@ class Game {
         });
         this.bullets.forEach((bullet, index) => {
             if (bullet.distance <= 0)
-                delete this.bullets[index];
+                this.bullets.splice(index, index + 1);
             else
                 bullet.update();
         });

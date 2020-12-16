@@ -22,7 +22,7 @@ class Player {
         this.score = 0;
         this.width = PLAYER_DIM.width;
         this.height = PLAYER_DIM.height;
-
+        this.hp = 3;
     }
     forDraw() {
         return {
@@ -38,6 +38,15 @@ class Player {
                 PLAYER_DIM.height,
             ],
         };
+    }
+    hpForDraw() {
+        return {
+            imageId: `${this.hp}-hp`,
+            drawImageParameters: [
+                this.x,
+                this.y - 15,
+            ],
+        }
     }
     startMoving(direction) {
         switch (direction) {

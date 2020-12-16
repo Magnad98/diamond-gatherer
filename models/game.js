@@ -26,9 +26,9 @@ class Game {
             this.winner = this.players[0].score > this.players[1].score ? "space-ranger" : "pink-lady";
             return;
         }
-        if (this.inProgress() && (this.players[0] === 0 || this.players[1].hp === 0)) {
+        if (this.inProgress() && (this.players[0].hp === 0 || this.players[1].hp === 0)) {
             this.over = true;
-            this.winner = this.players[0].score > 0 ? "space-ranger" : "pink-lady";
+            this.winner = this.players[0].hp > 0 ? "space-ranger" : "pink-lady";
             return;
         }
         this.players.forEach((player) => {
@@ -37,7 +37,7 @@ class Game {
         this.bullets.forEach((bullet, index) => {
             if (bullet.distance <= 0) {
                 delete this.bullets[index];
-                delete server.bullets[bullet.player.socketId]; //ERROR HERE
+                delete server.bullets[bullet.player.socketId];
             } else
                 bullet.update();
         });

@@ -11,6 +11,7 @@ class Bullet {
         this.setSpeed();
         this.distance = 200;
         this.width = 13;
+        this.height = 13;
         this.opponent = this.findOpponent();
     }
     setSpeed() {

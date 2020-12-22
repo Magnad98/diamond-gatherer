@@ -1,0 +1,49 @@
+/***CLASSES***/
+
+.display-none {
+    display: none;
+}
+
+.container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+/***IDS***/
+
+
+/*MENU*/
+
+#create-game-container {
+    margin-top: 10px;
+}
+
+
+/*CHAT*/
+
+#chat-messages {
+    border: 1px solid black;
+    width: 500px;
+    height: 500px;
+    overflow: auto;
+    margin-bottom: 10px;
+    padding: 2px;
+}
+
+#leave-chat-button {
+    margin-top: 10px;
+}
+
+
+/*GAME*/
+
+#game-canvas {
+    border: 1px solid black;
+    width: 960px;
+    height: 640px;
+}
+
+#back-to-menu {
+    margin-top: 10px;
+}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diamond Gatherer</title>
+
+    <!--Solution for error "GET http://127.0.0.1:5500/favicon.ico [HTTP/1.1 404 Not Found 0ms]"-->
+    <link rel="shortcut icon" href="#">
+
+    <!--STYLES-->
+    <link rel="stylesheet" href="./css/style.css">
+
+    <!--SCRIPTS-->
+    <script src="./socket.io/socket.io.js" type="module"></script>
+    <script src="./js/main.js" type="module"></script>
+</head>
+
+<body>
+    <!--IMAGES-->
+    <div id="image-container" class="container display-none">
+        <!--DIAMONDS-->
+        <img src="./assets/diamonds/diamond.png" id="diamond">
+
+        <!--END GAME SCREENS-->
+        <img src="./assets/end-game-screens/pink-lady-won.png" id="pink-lady-won">
+        <img src="./assets/end-game-screens/player-disconnected.png" id="player-disconnected">
+        <img src="./assets/end-game-screens/space-ranger-won.png" id="space-ranger-won">
+
+        <!--HP-->
+        <img src="./assets/hp/1-hp.png" id="1-hp">
+        <img src="./assets/hp/2-hp.png" id="2-hp">
+        <img src="./assets/hp/3-hp.png" id="3-hp">
+
+        <!--MAPS-->
+        <img src="./assets/maps/map.png" id="map-image">
+
+        <!--PLAYERS-->
+        <div>
+            <!--PINK LADY-->
+            <img src="./assets/players/pink-lady/pink-lady-bullet.png" id="pink-lady-bullet">
+            <img src="./assets/players/pink-lady/pink-lady-player-with-diamond.png" id="pink-lady-with-diamond">
+            <img src="./assets/players/pink-lady/pink-lady-player.png" id="pink-lady">
+
+            <!--SPACE RANGER-->
+            <img src="./assets/players/space-ranger/space-ranger-bullet.png" id="space-ranger-bullet">
+            <img src="./assets/players/space-ranger/space-ranger-player-with-diamond.png" id="space-ranger-with-diamond">
+            <img src="./assets/players/space-ranger/space-ranger-player.png" id="space-ranger">
+        </div>
+    </div>
+
+    <!--MENU-->
+    <div id="menu-container" class="container">
+        <div id="join-chat">
+            <input id="user-name-input" type="text" placeholder="Enter your name" />
+            <button id="join-chat-button">Join Chat</button>
+            <p id="user-name-missing" class="display-none">Please enter a user name to join chat!</p>
+        </div>
+        <div id="create-game-container">
+            <input id="game-name-input" type="text" placeholder="Enter the game name" />
+            <button id="create-game-button">Create Game</button>
+            <p id="game-name-missing" class="display-none">Please enter a name to create a new game!</p>
+        </div>
+        <div id="game-list">
+
+        </div>
+    </div>
+
+    <!---CHAT-->
+    <div id="chat-container" class="container display-none">
+        <div id="chat-messages">
+
+        </div>
+        <input type="text" id="message" placeholder="Your message" />
+        <button id="send-message-button">Send</button>
+        <br>
+        <button id="leave-chat-button">Leave chat</button>
+    </div>
+
+    <!--GAME-->
+    <div id="game-container" class="container display-none">
+        <canvas id="game-canvas">
+
+        </canvas>
+        <p id="waiting-for-players">Waiting for second player! You cannot move.</p>
+        <div id="score-container" class="display-none">
+            <p>Space Ranger has <span id="space-ranger-score">0</span> diamonds!</p>
+            <p>Pink Lady has <span id="pink-lady-score">0</span> diamonds!</p>
+        </div>
+        <button id="back-to-menu" class="display-none">Back To Menu</button>
+    </div>
+</body>
+
+</html>

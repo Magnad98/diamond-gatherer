@@ -1,5 +1,8 @@
 /***CLASSES***/
 
+
+/*PAGE*/
+
 .display-none {
     display: none;
 }
@@ -7,6 +10,16 @@
 .container {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+
+/*MENU*/
+
+.game-element {
+    border: 1px solid black;
+    text-align: center;
+    padding: 10px;
+    margin: 10px;
 }
 
 
@@ -40,8 +53,6 @@
 
 #game-canvas {
     border: 1px solid black;
-    width: 960px;
-    height: 640px;
 }
 
 #back-to-menu {

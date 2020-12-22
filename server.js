@@ -18,19 +18,19 @@ http.listen(port, () => {
 });
 
 /*IMPORTS*/
-/*const SpaceRanger = require("./models/space_ranger.js");
+const SpaceRanger = require("./models/space_ranger.js");
 const PinkLady = require("./models/pink_lady.js");
 const Game = require("./models/game.js");
-const Bullet = require("./models/bullet.js");*/
+const Bullet = require("./models/bullet.js");
 
 /*GLOBALS*/
-/*const chatUsers = {};
+const chatUsers = {};
 const games = {};
 const players = {};
-const bullets = {};*/
+const bullets = {};
 
 /*FUNCTIONS*/
-/*const gameLoop = (roomId) => {
+const gameLoop = (roomId) => {
     const game = games[roomId];
     if (game) {
         game.update();
@@ -71,11 +71,11 @@ const bullets = {};*/
             io.to(roomId).emit("game-loop", data);
         }
     }
-}*/
+}
 
 /*SOCKET IO CONNECTION (SERVER SIDE)*/
-/*io.on("connection", (socket) => {
-    console.log("[SOCKET CONNECTED]" + socket.id);
+io.on("connection", (socket) => {
+    console.log(`[NEW SOCKET HAS CONNECTED WITH ID ${socket.id}]`);
     socket.join("menu");
     Object.keys(games).forEach((gameId) => {
         if (games[gameId].players.length == 1) {
@@ -84,19 +84,19 @@ const bullets = {};*/
     });
 
     socket.on("join-chat", (userName) => {
-        console.log("[USER JOINED CHAT]", socket.id, userName);
+        console.log(`[USER HAS JOINED CHAT WITH ID ${socket.id} AND NAME ${userName}]`);
         chatUsers[socket.id] = userName;
         socket.join("chat");
         socket.emit("joined-chat");
     });
 
     socket.on("send-message", (message) => {
-        console.log("[USER SENT MESSAGE]", message);
+        console.log(`[USER WITH ID ${socket.id} SENT THE MESSAGE ${message}]`);
         io.to("chat").emit("new-message", `${chatUsers[socket.id]}: ${message}`);
     });
 
     socket.on("leave-chat", () => {
-        console.log("[USER LEFT CHAT]", socket.id);
+        console.log(`[USER HAS LEFT CHAT WITH ID ${socket.id}]`);
         delete chatUsers[socket.id];
         socket.leave("chat");
         socket.emit("menu");
@@ -112,7 +112,7 @@ const bullets = {};*/
             name: gameName,
         });
         games[gameId] = game;
-        console.log(`[User joined ${gameId}] room`);
+        console.log(`[USER JINED THE ROOM WITH GAME ID ${gameId}]`);
         socket.join(gameId);
         io.to("menu").emit("add-game-to-list", {
             gameName: gameName,
@@ -148,7 +148,7 @@ const bullets = {};*/
     });
 
     socket.on("disconnect", () => {
-        console.log(`[SOCKET ${socket.id} DISCONNECTED]`);
+        console.log(`[SOCKET HAS DISCONNECTED WITH ID ${socket.id}]`);
         if (players[socket.id]) {
             const gameId = players[socket.id].gameId;
             const game = games[gameId];
@@ -180,9 +180,9 @@ const bullets = {};*/
             game.bullets.push(new Bullet(players[socket.id]));
         }
     })
-});*/
+});
 
 /*EXPORTS*/
-/*module.exports.gameLoop = gameLoop;
+module.exports.gameLoop = gameLoop;
 module.exports.games = games;
-module.exports.bullets = bullets;*/
+module.exports.bullets = bullets;
